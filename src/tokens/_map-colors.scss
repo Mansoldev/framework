@@ -1,0 +1,22 @@
+// Paleta inicial
+$palette: (
+  "brand": (
+    "500": oklch(65% 0.25 260),     // Azul vibrante
+    "600": oklch(55% 0.22 260),
+  ),
+  "neutral": (
+    "0":   oklch(100% 0 0),         // Blanco puro
+    "100": oklch(97% 0.01 260),
+    "800": oklch(25% 0.02 260),
+    "900": oklch(15% 0.02 260),     // Casi negro
+    "1000": oklch(0% 0 0),          // Negro puro
+  ),
+  "accent": (
+    "500": oklch(70% 0.3 150),      // Verde esmeralda
+  )
+);
+
+// Función helper para acceder al mapa
+@function get-color($group, $shade) {
+  @return map-get(map-get($palette, $group), $shade);
+}

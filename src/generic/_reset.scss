@@ -1,0 +1,43 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Eliminar márgenes por defecto de elementos que suelen dar problemas */
+body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
+  margin-block-end: 0;
+  margin-block-start: 0;
+}
+
+/* Setup de accesibilidad y altura */
+html {
+  -webkit-text-size-adjust: none; // Evita zoom de texto en iOS landscape
+  interpolation-composition: replace; // Mejora animaciones
+}
+
+body {
+  min-height: 100dvh; // Dynamic Viewport Height para móviles
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeSpeed;
+}
+
+/* Hacer que las imágenes sean fáciles de manejar */
+img, picture, svg {
+  max-width: 100%;
+  display: block;
+}
+
+/* Heredar fuentes en inputs y botones */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* Evitar animaciones a usuarios que lo prefieran por accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

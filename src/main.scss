@@ -1,6 +1,26 @@
-// Directorio de orquesta
-// @use "base/elements";
+// body {
+//   background-color: blue;
+// }
 
-body {
-  background-color: blue;
-}
+// 1. Abstracts (Funciones y Mixins - No generan CSS)
+// @use "abstracts/functions";
+// @use "abstracts/mixins";
+
+// 2. Tokens (Variables de configuración)
+@use "tokens/map-colors";
+
+// 3. Themes (Variables CSS en :root)
+@use "themes/root";
+
+// 4. Generic (Resets)
+@use "generic/reset";
+
+// 5. Base (Etiquetas puras)
+@use "base/elements";
+
+// 6. Components (Clases aisladas)
+@use "components/button";
+@use "components/card";
+
+// 7. Utilities (Clases de ayuda rápidas)
+// (De momento vacío o con lo mínimo)
