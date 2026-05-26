@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Style Framework | Documentation</title>
+  <link rel="stylesheet" href="./src/main.scss">
+</head>
+<body>
+  <header class="l-container u-py-xl">
+    <h1>🚀 My Style System</h1>
+    <p>Framework CSS agnóstico, moderno y escalable (2026).</p>
+    
+    <div class="u-flex u-gap-md u-mt-lg">
+      <button onclick="document.documentElement.setAttribute('data-theme', 'light')" class="c-btn c-btn--secondary">Modo Claro</button>
+      <button onclick="document.documentElement.setAttribute('data-theme', 'dark')" class="c-btn c-btn--secondary">Modo Oscuro</button>
+    </div>
+  </header>
+
+  <main class="l-container">
+    <section class="u-mb-xl">
+      <h2>Botones</h2>
+      <div class="u-flex u-gap-md u-mt-md">
+        <button class="c-btn">Primario</button>
+        <button class="c-btn c-btn--secondary">Secundario</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Cards</h2>
+      <article class="c-card u-mt-md">
+        <h3>Título de la Card</h3>
+        <p>Este es un ejemplo de cómo se ve el texto dentro de una superficie elevada.</p>
+      </article>
+    </section>
+  </main>
+
+  <script type="module">
+    // Aquí podrías añadir lógica para persistir el tema en localStorage
+  </script>
+</body>
+</html>
