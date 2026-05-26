@@ -1,0 +1,36 @@
+# Dependencias
+node_modules/
+.pnpm-debug.log
+
+# Salida de compilación del Framework
+dist/
+temp/
+
+# Salida de compilación de la documentación (GitHub Pages)
+docs/
+
+# Logs de error y runtime
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Entorno y configuración local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDEs (VSCode, IntelliJ, etc)
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Sistema operativo
+Thumbs.db
+.DS_Store
