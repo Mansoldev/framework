@@ -1,3 +1,5 @@
+@use "sass:map"; // Importante: ahora las funciones cuelgan de aquí
+
 // Paleta inicial
 $palette: (
   "brand": (
@@ -18,5 +20,6 @@ $palette: (
 
 // Función helper para acceder al mapa
 @function get-color($group, $shade) {
-  @return map-get(map-get($palette, $group), $shade);
+  // Cambiamos map-get(...) por map.get(...)
+  @return map.get(map.get($palette, $group), $shade);
 }

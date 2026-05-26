@@ -1,0 +1,17 @@
+@use "sass:map";
+
+$spacers: (
+  "none": 0,
+  "sm": 0.5rem,
+  "md": 1.5rem,
+  "lg": 3rem,
+  "xl": 5rem
+);
+
+// Bucle para generar utilidades de margen superior
+@each $name, $value in $spacers {
+  .mu-mt-#{$name} { margin-top: $value !important; }
+  .mu-mb-#{$name} { margin-bottom: $value !important; }
+  .mu-py-#{$name} { padding-block: $value !important; }
+  .mu-p-#{$name}  { padding: $value !important; }
+}

@@ -1,22 +1,12 @@
-@use "../tokens/map-colors" as *;
+@use "../tokens/map-colors" as tokens;
 
 :root {
-  // Soporte nativo para esquemas de color
   color-scheme: light dark;
 
-  // Forzado mediante atributo [data-theme] (el que usan tus botones)
   &[data-theme="light"] { color-scheme: light; }
   &[data-theme="dark"] { color-scheme: dark; }
 
-  // Variables Semánticas (El corazón del sistema)
-  --bg-body: #{light-dark(get-color("neutral", "100"), get-color("neutral", "900"))};
-  --text-main: #{light-dark(get-color("neutral", "900"), get-color("neutral", "100"))};
-  
-  // Superficies (Cards, etc)
-  --surface: #{light-dark(get-color("neutral", "0"), get-color("neutral", "800"))};
-  --border: #{light-dark(get-color("neutral", "200"), oklch(35% 0.02 250))};
-
-  // Marca
-  --brand: #{get-color("brand", "500")};
-  --brand-hover: #{get-color("brand", "600")};
+  // Usamos la función que ya gestiona internamente el map.get
+  --bg-body: #{light-dark(tokens.get-color("neutral", "100"), tokens.get-color("neutral", "900"))};
+  --text-main: #{light-dark(tokens.get-color("neutral", "900"), tokens.get-color("neutral", "100"))};
 }
