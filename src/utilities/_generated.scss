@@ -1,17 +1,101 @@
-@use "sass:map";
+//@use "sass:map";
+@use "sass:meta";
+@use "../tokens/map-spacing" as spacing;
 
-$spacers: (
-  "none": 0,
-  "sm": 0.5rem,
-  "md": 1.5rem,
-  "lg": 3rem,
-  "xl": 5rem
+// ======================================================
+// CONFIG
+// ======================================================
+
+$properties: (
+  m: margin,
+  p: padding
 );
 
-// Bucle para generar utilidades de margen superior
-@each $name, $value in $spacers {
-  .mu-mt-#{$name} { margin-top: $value !important; }
-  .mu-mb-#{$name} { margin-bottom: $value !important; }
-  .mu-py-#{$name} { padding-block: $value !important; }
-  .mu-p-#{$name}  { padding: $value !important; }
+$directions: (
+  "": "",
+  t: -top,
+  r: -right,
+  b: -bottom,
+  l: -left,
+  x: ("-left", "-right"),
+  y: ("-top", "-bottom")
+);
+
+// ======================================================
+// POSITIVE SPACING UTILITIES
+// ======================================================
+
+@each $prop-key, $prop-name in $properties {
+  @each $dir-key, $dir-value in $directions {
+    @each $size, $value in spacing.$mu-spacers {
+      .mu-#{$prop-key}#{$dir-key}-#{$size} {
+        @if meta.type-of($dir-value) == "list" {
+          @each $d in $dir-value {
+            #{$prop-name}#{$d}: var(--mu-space-#{$size}) !important;
+          }
+        } @else if $dir-value == "" {
+          #{$prop-name}: var(--mu-space-#{$size}) !important;
+        } @else {
+          #{$prop-name}#{$dir-value}: var(--mu-space-#{$size}) !important;
+        }
+      }
+    }
+  }
+}
+
+// ======================================================
+// AUTO MARGINS
+// ======================================================
+
+.mu-m-auto {
+  margin: auto !important;
+}
+
+.mu-mx-auto {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.mu-my-auto {
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
+
+// ======================================================
+// NEGATIVE MARGINS
+// ======================================================
+
+@each $size, $value in spacing.$mu-spacers {
+  @if $size != 0 {
+
+    .mu--m-#{$size} {
+      margin: calc(var(--mu-space-#{$size}) * -1) !important;
+    }
+
+    .mu--mt-#{$size} {
+      margin-top: calc(var(--mu-space-#{$size}) * -1) !important;
+    }
+
+    .mu--mr-#{$size} {
+      margin-right: calc(var(--mu-space-#{$size}) * -1) !important;
+    }
+
+    .mu--mb-#{$size} {
+      margin-bottom: calc(var(--mu-space-#{$size}) * -1) !important;
+    }
+
+    .mu--ml-#{$size} {
+      margin-left: calc(var(--mu-space-#{$size}) * -1) !important;
+    }
+
+    .mu--mx-#{$size} {
+      margin-left: calc(var(--mu-space-#{$size}) * -1) !important;
+      margin-right: calc(var(--mu-space-#{$size}) * -1) !important;
+    }
+
+    .mu--my-#{$size} {
+      margin-top: calc(var(--mu-space-#{$size}) * -1) !important;
+      margin-bottom: calc(var(--mu-space-#{$size}) * -1) !important;
+    }
+  }
 }

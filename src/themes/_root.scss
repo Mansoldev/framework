@@ -1,4 +1,5 @@
 @use "../tokens/map-colors" as tokens;
+@use "../tokens/map-spacing" as spacing;
 
 :root {
   color-scheme: light dark;
@@ -9,4 +10,8 @@
   // Usamos la función que ya gestiona internamente el map.get
   --bg-body: #{light-dark(tokens.get-color("neutral", "100"), tokens.get-color("neutral", "900"))};
   --text-main: #{light-dark(tokens.get-color("neutral", "900"), tokens.get-color("neutral", "100"))};
+
+  @each $key, $value in spacing.$mu-spacers {
+    --mu-space-#{$key}: #{$value};
+  }
 }

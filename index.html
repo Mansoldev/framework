@@ -6,38 +6,56 @@
   <title>System Style Framework | Documentation</title>
   <link rel="stylesheet" href="./docs/docs.scss">
 </head>
-<body class="ml-app-shell">
-  <aside class="ml-sidebar">
-    <div class="mu-p-md">
-      <strong class="mu-text-brand">M-SYSTEM</strong>
-    </div>
-    <nav class="mc-nav">
-      <a href="#setup" class="mc-nav__link">Instalación</a>
-      <a href="#buttons" class="mc-nav__link">Buttons</a>
-      <a href="#cards" class="mc-nav__link">Cards</a>
-    </nav>
-  </aside>
+<body >
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <h1 class="topbar__title">M-System UI</h1>
 
-  <main class="ml-main">
-    <header class="mu-py-xl">
-      <h1 class="mu-text-display">Documentación</h1>
-      <p>Explora los componentes de M-System bajo OKLCH.</p>
+    <div class="topbar__actions">
       
-      <div class="mu-flex mu-gap-md mu-mt-lg">
-        <button id="themeToggle" class="mc-btn mc-btn--secondary">
-        🌙 Modo Oscuro
-        </button>
-      </div>
-    </header>
+      <!-- Theme toggle -->
+      <button id="themeToggle" class="mc-btn mc-btn--secondary">
+        🌙 Oscuro
+      </button>
 
-    <section id="buttons" class="mu-mb-xl">
-      <h2 class="mu-mb-md">Componente: Botón</h2>
-      <div class="mc-card">
-        <button class="mc-btn">Botón Primario</button>
-        <button class="mc-btn mc-btn--secondary">Botón Secundario</button>
+      <!-- Style selector -->
+      <select id="styleSelect" class="select">
+        <option value="neon">Neón</option>
+        <option value="pastel">Pastel</option>
+      </select>
+
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- Search -->
+      <div class="sidebar__search">
+        🔍
+        <input type="text" placeholder="Buscar...">
       </div>
-    </section>
-  </main>
+
+      <!-- Nav -->
+      <nav class="nav">
+        <a href="#">Inicio</a>
+        <a href="#">Componentes</a>
+        <a href="#">Botones</a>
+        <a href="#">Cards</a>
+        <a href="#">Documentación</a>
+      </nav>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="content">
+      <h2>Bienvenido</h2>
+      <p>Panel de ejemplo con layout base.</p>
+    </main>
+
+  </div>
 
   <script type="module">
     // Aquí podrías añadir lógica para persistir el tema en localStorage
