@@ -1,7 +1,8 @@
 {
-	"name": "my-framework-css",
+	"name": "@mansoldev/framework",
 	"version": "1.0.0",
 	"type": "module",
+	"description": "A modern CSS framework powered by Sass and PostCSS.",
 	"scripts": {
 		"clean": "node -e \"const fs = require('fs'); ['dist', 'temp'].forEach(path => fs.rmSync(path, { recursive: true, force: true }))\"",
 		"dev": "vite",
