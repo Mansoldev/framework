@@ -7,7 +7,7 @@
 		"clean": "node -e \"const fs = require('fs'); ['dist', 'docs', 'temp'].forEach(path => fs.rmSync(path, { recursive: true, force: true }))\"",
 		"dev": "pnpm exec astro dev --root website",
 		"build:framework": "pnpm exec vite build --config vite.config.framework.js",
-		"build:website": "pnpm exec astro build --root website && node -e \"const fs=require('fs'); const path=require('path'); const src=path.resolve('website','dist'); const dest=path.resolve('docs'); fs.rmSync(dest,{recursive:true,force:true}); fs.renameSync(src,dest);\"",
+		"build:website": "pnpm exec astro build --root website && node -e \"const fs=require('fs'); const path=require('path'); const src=path.resolve('website','dist'); const dest=path.resolve('docs'); fs.rmSync(dest,{recursive:true,force:true}); fs.cpSync(src,dest,{recursive:true}); fs.rmSync(src,{recursive:true,force:true});\"",
 		"build": "pnpm run clean && pnpm run build:framework && pnpm run build:website",
 		"preview": "pnpm exec astro preview --host --root website"
 	},
