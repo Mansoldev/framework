@@ -1,44 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>System Style Framework | Documentation</title>
-  <link rel="stylesheet" href="./docs/docs.scss">
+  <link rel="stylesheet" href="./website/src/styles/website.scss" />
 </head>
-<body >
+<body>
   <!-- TOP BAR -->
   <header class="topbar">
     <h1 class="topbar__title">M-System UI</h1>
 
     <div class="topbar__actions">
-      
-      <!-- Theme toggle -->
       <button id="themeToggle" class="mc-btn mc-btn--secondary">
         🌙 Oscuro
       </button>
 
-      <!-- Style selector -->
       <select id="styleSelect" class="select">
         <option value="neon">Neón</option>
         <option value="pastel">Pastel</option>
       </select>
-
     </div>
   </header>
 
   <div class="layout">
-
-    <!-- SIDEBAR -->
     <aside class="sidebar">
-
-      <!-- Search -->
       <div class="sidebar__search">
         🔍
-        <input type="text" placeholder="Buscar...">
+        <input type="text" placeholder="Buscar..." />
       </div>
 
-      <!-- Nav -->
       <nav class="nav">
         <a href="#">Inicio</a>
         <a href="#">Componentes</a>
@@ -46,32 +37,28 @@
         <a href="#">Cards</a>
         <a href="#">Documentación</a>
       </nav>
-
     </aside>
 
-    <!-- MAIN -->
     <main class="content">
       <h2>Bienvenido</h2>
       <p>Panel de ejemplo con layout base.</p>
     </main>
-
   </div>
 
   <script type="module">
-    // Aquí podrías añadir lógica para persistir el tema en localStorage
     const root = document.documentElement;
     const btn = document.getElementById('themeToggle');
 
     btn.addEventListener('click', () => {
-        const isDark = root.getAttribute('data-theme') === 'dark';
+      const isDark = root.getAttribute('data-theme') === 'dark';
 
-        if (isDark) {
+      if (isDark) {
         root.setAttribute('data-theme', 'light');
         btn.innerHTML = '🌙 Modo Oscuro';
-        } else {
+      } else {
         root.setAttribute('data-theme', 'dark');
         btn.innerHTML = '☀️ Modo Claro';
-        }
+      }
     });
   </script>
 </body>
