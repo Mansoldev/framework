@@ -1,5 +1,9 @@
 ---
 import '../styles/website.scss';
+
+if (Astro.mode !== 'production') {
+  await import('../../../src/main.scss');
+}
 ---
 
 <html lang="es">
@@ -7,6 +11,7 @@ import '../styles/website.scss';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>System Style Framework | Documentation</title>
+    {Astro.mode === 'production' && <link rel="stylesheet" href="/framework.css" />}
   </head>
   <body>
     <!-- TOP BAR -->
