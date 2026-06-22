@@ -1,0 +1,76 @@
+/* Estilos específicos de la documentación */
+.layout {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+.topbar {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+.topbar__actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.sidebar {
+  width: 260px;
+  border-right: 1px solid #ddd;
+  padding: 16px;
+}
+
+.sidebar__search {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.sidebar__search input {
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: inherit;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.nav a:hover {
+  background: #f2f2f2;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+#themeToggle {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.select {
+  padding: 8px;
+  border-radius: 8px;
+}

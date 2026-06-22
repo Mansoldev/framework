@@ -4,12 +4,12 @@
 	"type": "module",
 	"description": "A modern CSS framework powered by Sass and PostCSS.",
 	"scripts": {
-		"clean": "node -e \"const fs = require('fs'); ['dist', 'temp'].forEach(path => fs.rmSync(path, { recursive: true, force: true }))\"",
-		"dev": "vite",
-		"build:framework": "sass src/main.scss dist/framework.css --no-source-map && postcss dist/framework.css -o dist/framework.min.css",
-		"build:pages": "vite build",
-		"build": "pnpm run clean && pnpm run build:framework && pnpm run build:pages",
-		"preview": "vite preview"
+		"clean": "node -e \"const fs = require('fs'); ['dist', 'docs', 'temp'].forEach(path => fs.rmSync(path, { recursive: true, force: true }))\"",
+		"dev": "pnpm exec astro dev --root website",
+		"build:framework": "pnpm exec vite build --config vite.config.framework.js",
+		"build:website": "node -e \"const fs=require('fs'); const path=require('path'); const src=path.resolve('dist','framework.css'); const dest=path.resolve('website','public','framework.css'); fs.mkdirSync(path.dirname(dest),{recursive:true}); fs.cpSync(src,dest);\" && pnpm exec astro build --root website && node -e \"const fs=require('fs'); const path=require('path'); const src=path.resolve('website','dist'); const dest=path.resolve('docs'); fs.rmSync(dest,{recursive:true,force:true}); fs.cpSync(src,dest,{recursive:true}); fs.rmSync(src,{recursive:true,force:true});\"",
+		"build": "pnpm run clean && pnpm run build:framework && pnpm run build:website",
+		"preview": "pnpm exec astro preview --host --root website"
 	},
 	"devDependencies": {
 		"autoprefixer": "^10.5.0",
@@ -17,7 +17,8 @@
 		"postcss": "^8.5.15",
 		"postcss-cli": "^11.0.1",
 		"sass-embedded": "^1.100.0",
-		"vite": "^6.0.0"
+		"vite": "^6.0.0",
+		"astro": "^6.0.0"
 	},
 	"browserslist": [
 		"> 0.5%",
