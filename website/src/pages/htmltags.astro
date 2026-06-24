@@ -1,11 +1,219 @@
----
+﻿---
 import MainLayout from '../layouts/MainLayout.astro';
 ---
 
 <MainLayout title="Html tags">
-  <h2>Botones</h2>
+  <!-- <h1>HEADERS</h1>
+  <h1>Header 1</h1>
+  <h2>Header 2</h2>
+  <h3>Header 3</h3>
+  <h4>Header 4</h4>
+  <h5>Header 5</h5>
+  <h6>Header 6</h6>
 
-  <button class="mc-btn">
-    Botón normal
-  </button>
+  <hr />
+
+  <h1>HEADERS</h1> -->
+  <header class="hero">
+    <div>
+      <h1>Elementos HTML</h1>
+      <p>
+        Vista previa de todos los elementos HTML estándar con identidad visual estilizados únicamente por la capa <code>base/</code>.
+      </p>
+    </div>
+    <aside class="hero-note">
+      <h2>Sobre esta guía</h2>
+      <p>
+        Los ejemplos se renderizan sin clases para mostrar el aspecto real proporcionado por el framework.
+      </p>
+    </aside>
+  </header>
+
+  <!-- Encabezados -->
+  <section class="docs-section">
+    <h2 class="section-title">Encabezados</h2>
+    <div class="docs-card">
+      <h1>Título h1</h1>
+      <h2>Título h2</h2>
+      <h3>Título h3</h3>
+      <h4>Título h4</h4>
+      <h5>Título h5</h5>
+      <h6>Título h6</h6>
+    </div>
+  </section>
+
+  <!-- Contenido -->
+  <section class="docs-section">
+    <h2 class="section-title">Texto y contenido</h2>
+    <div class="docs-grid docs-grid--2">
+      <div class="docs-card">
+        <p>Este es un párrafo de ejemplo para mostrar los estilos base.</p>
+        <hr />
+        <pre>Texto preformateado. Conserva espacios y saltos.</pre>
+        <blockquote>Esta es una cita destacada.</blockquote>
+        <ol>
+          <li>Primer elemento</li>
+          <li>Segundo elemento</li>
+          <li>Tercer elemento</li>
+        </ol>
+        <ul>
+          <li>Elemento de lista</li>
+          <li>Elemento de lista</li>
+          <li>Elemento de lista</li>
+        </ul>
+        <dl>
+          <dt>Término</dt>
+          <dd>Descripción del término.</dd>
+          <dt>Otro término</dt>
+          <dd>Descripción adicional.</dd>
+        </dl>
+      </div>
+      <div class="docs-card">
+        <p>
+          <a href="#">Enlace</a>, <strong>strong</strong>, <em>em</em>, <small>small</small>, <mark>mark</mark>,
+          <code>code</code>, <kbd>Ctrl</kbd>, <samp>salida</samp>, <var>variable</var>,
+          <abbr title="HyperText Markup Language">HTML</abbr>.
+        </p>
+        <p>H<sub>2</sub>O y x<sup>2</sup></p>
+        <p><q>Cita en línea</q></p>
+        <p><cite>Nombre de una obra</cite></p>
+        <p><time datetime="2026-06-24">24 junio 2026</time></p>
+        <p><data value="42">42</data></p>
+        <p><b>Texto en negrita</b></p>
+        <p><i>Texto en cursiva</i></p>
+        <p><u>Texto subrayado</u></p>
+        <p>Primera línea<br />Segunda línea</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Figura -->
+  <section class="docs-section">
+    <h2 class="section-title">Figuras</h2>
+    <div class="docs-card">
+      <figure>
+        <img src="https://picsum.photos/800/400" alt="Ejemplo" />
+        <figcaption>Leyenda de la imagen.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Tablas -->
+  <section class="docs-section">
+    <h2 class="section-title">Tablas</h2>
+    <div class="docs-card">
+      <table>
+        <caption>Título de la tabla</caption>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Rol</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ana</td>
+            <td>Admin</td>
+            <td>Activo</td>
+          </tr>
+          <tr>
+            <td>Luis</td>
+            <td>Editor</td>
+            <td>Activo</td>
+          </tr>
+          <tr>
+            <td>María</td>
+            <td>Autor</td>
+            <td>Pendiente</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Formularios -->
+  <section class="docs-section">
+    <h2 class="section-title">Formularios</h2>
+    <div class="docs-grid docs-grid--3">
+      <div class="docs-card">
+        <form>
+          <label>Nombre <input type="text" /></label>
+          <label>Email <input type="email" /></label>
+          <label>Mensaje <textarea rows="4"></textarea></label>
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+      <div class="docs-card">
+        <label>Selección
+          <select>
+            <option>Opción 1</option>
+            <option>Opción 2</option>
+            <option>Opción 3</option>
+          </select>
+        </label>
+        <fieldset>
+          <legend>Opciones</legend>
+          <label><input type="checkbox" /> Opción A</label>
+          <label><input type="checkbox" /> Opción B</label>
+        </fieldset>
+      </div>
+      <div class="docs-card">
+        <label>Rango <input type="range" /></label>
+        <label>Color <input type="color" /></label>
+        <label>Fecha <input type="date" /></label>
+        <progress value="70" max="100"></progress>
+        <meter value="0.6"></meter>
+      </div>
+    </div>
+  </section>
+
+  <!-- Multimedia -->
+  <section class="docs-section">
+    <h2 class="section-title">Multimedia</h2>
+    <div class="docs-grid docs-grid--3">
+      <div class="docs-card">
+        <img src="https://picsum.photos/400/250" alt="Ejemplo" />
+      </div>
+      <div class="docs-card">
+        <audio controls>
+          <source src="" type="audio/mpeg" />
+        </audio>
+      </div>
+      <div class="docs-card">
+        <video controls width="100%">
+          <source src="" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactivos -->
+  <section class="docs-section">
+    <h2 class="section-title">Elementos interactivos</h2>
+    <div class="docs-grid docs-grid--2">
+      <div class="docs-card">
+        <details>
+          <summary>Más información</summary>
+          <p>Contenido desplegable.</p>
+        </details>
+      </div>
+      <div class="docs-card">
+        <dialog open>Este es un diálogo abierto.</dialog>
+      </div>
+    </div>
+  </section>
+
+  <!-- Otros -->
+  <section class="docs-section">
+    <h2 class="section-title">Otros elementos</h2>
+    <div class="docs-card">
+      <address>
+        Juan Pérez<br />
+        Calle Falsa 123<br />
+        Madrid<br />
+        juan@example.com
+      </address>
+    </div>
+  </section>
 </MainLayout>
