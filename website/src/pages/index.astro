@@ -1,69 +1,9 @@
 ---
-import '../styles/website.scss';
-
-if (Astro.mode !== 'production') {
-  await import('../../../src/main.scss');
-}
+import MainLayout from '../layouts/MainLayout.astro';
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>System Style Framework | Documentation</title>
-    {Astro.mode === 'production' && <link rel="stylesheet" href="/framework.css" />}
-  </head>
-  <body>
-    <!-- TOP BAR -->
-    <header class="topbar">
-      <h1 class="topbar__title">M-System UI</h1>
-      <div class="topbar__actions">
-        <button id="themeToggle" class="mc-btn mc-btn--secondary">
-          🌙 Oscuro
-        </button>
-        <select id="styleSelect" class="select">
-          <option value="neon">Neón</option>
-          <option value="pastel">Pastel</option>
-        </select>
-      </div>
-    </header>
+<MainLayout title="Index">
+  <h2>Bienvenido</h2>
+  <p>Panel de ejemplo con layout base.</p>
+</MainLayout>
 
-    <div class="layout">
-      <aside class="sidebar">
-        <div class="sidebar__search">
-          🔍
-          <input type="text" placeholder="Buscar..." />
-        </div>
-        <nav class="nav">
-          <a href="#">Inicio</a>
-          <a href="#">Componentes</a>
-          <a href="#">Botones</a>
-          <a href="#">Cards</a>
-          <a href="#">Documentación</a>
-        </nav>
-      </aside>
-
-      <main class="content">
-        <h2>Bienvenido</h2>
-        <p>Panel de ejemplo con layout base.</p>
-      </main>
-    </div>
-
-    <script type="module">
-      const root = document.documentElement;
-      const btn = document.getElementById('themeToggle');
-
-      btn.addEventListener('click', () => {
-        const isDark = root.getAttribute('data-theme') === 'dark';
-
-        if (isDark) {
-          root.setAttribute('data-theme', 'light');
-          btn.innerHTML = '🌙 Modo Oscuro';
-        } else {
-          root.setAttribute('data-theme', 'dark');
-          btn.innerHTML = '☀️ Modo Claro';
-        }
-      });
-    </script>
-  </body>
-</html>
