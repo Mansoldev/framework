@@ -7,61 +7,58 @@
 html {
   -webkit-text-size-adjust: 100%; /* Safari */
   text-size-adjust: 100%;         /* Estándar futuro */
-  scroll-behavior: smooth; //2026: Se asume que si un usuario hace clic en un ancla, la web baje suavemente, a menos que prefiera lo contrario (cosa que ya manejas en tu media query)
 }
 
 /* Tipografía base y suavizado */
-body {
-  min-height: 100dvh; // Resuelve problemas historicos: barra de navegación móvil, barra inferior de Safari
-  // y URL bar que aparece/desaparece
-  // 2026 PROPUESTA: mover a la .layout-app, en una web documental no se espera que el body ocupe toda la pantalla
-  line-height: 1.5; //2026: mantiene el interlineado homogéneo
-  //-webkit-font-smoothing: antialiased; //2026: afecta accesibilidad, afecta rendimiento y es una decisión de UX
-  //text-rendering: optimizeSpeed; //2026: Normalmente empeora la calidad visual, la mayoría de los frameworks lo ha quitado.
-  // 2026: Suavizar fuentes en macOS/iOS (opcional)
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+// body {
+//   min-height: 100dvh; // Resuelve problemas historicos: barra de navegación móvil, barra inferior de Safari y URL bar que aparece/desaparece
+//   // 2026 PROPUESTA: mover a la .layout-app, en una web documental no se espera que el body ocupe toda la pantalla
+// }
 
-/* 2026 Reset drástico de márgenes conflictivos */
-body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd {
-  margin: 0;
-}
 /* 2026 Evitar desbordamiento de textos largos (URLs, hashes, etc.) */
 h1, h2, h3, h4, h5, h6, p, li, blockquote, figcaption {
   overflow-wrap: break-word;
+}
+
+/* 2026 Reset drástico de márgenes conflictivos */
+body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, pre, fieldset, dl, dd {
+  margin: 0;
 }
 
 /* 2026 Elementos multimedia responsivos y consistentes */
 img, picture, video, canvas {
   max-width: 100%;
   display: block;
+  height: auto; //2026: Mantiene la relación de aspecto que se puede deformar sino en algunos contextos si el ancho se reduce pero la altura no
 }
 /* 2026 SVGs fluidos (pueden ser inline o iconos) */
-svg {
-  max-width: 100%;
-  fill: currentColor; /* PROPUESTA: hereda el color del texto por defecto */
-}
-/* 2026: Mantiene la relación de aspecto que se puede deformar sino en algunos contextos si el ancho se reduce pero la altura no */
-img, video {
-  height: auto;
-  /* Asegurar que las imágenes no se arrastran por defecto y no son seleccionables accidentalmente, puede ser excesivo sacar */
-  -webkit-user-drag: none;
-  //user-select: none; /* 2026: Mover a otra parte, permite guardar imagen o arrastrarla a otra pestaña */
-}
+// svg {
+//   //max-width: 100%; //No aporta nada
+//   //fill: currentColor; /* PROPUESTA: hereda el color del texto por defecto, rompe packs de iconos que no definan fill, pasar a .icon*/
+// }
+/* Ajustes específicos para imágenes y vídeos (UX) */
+// img, video {
+//   //Asegurar que las imágenes no se arrastran por defecto y no son seleccionables accidentalmente, puede ser excesivo sacar 
+//   //-webkit-user-drag: none;
+//   //user-select: none; /* 2026: Mover a otra parte, permite guardar imagen o arrastrarla a otra pestaña */
+// }
 
 /* 2026 Heredar fuentes en formularios: inputs y botones */
 input, button, textarea, select {
   font: inherit;
-}
-/* 2026 Algunos navegadores siguen metiendo colores raros */
-button {
   color: inherit;
-  letter-spacing: inherit; //2026: micro-corrección, algunos navegadores antiguos lo modifican
+  letter-spacing: inherit;
+  text-align: inherit;
 }
-/* 2026: textarea pueden crecer automaticamente por el contenido sin JS */
-textarea {
-  field-sizing: content;
+
+// textarea {
+//   field-sizing: content; //PROPUESTA mover a .auto-grow, no es un reset global, es un comportamiento opcional
+// }
+
+/* Por defecto, Chrome, Firefox y Safari meten un borde horrible con relieve (groove o inset) y un padding asimétrico que destruye cualquier alineación con Flexbox o Grid */
+fieldset {
+  padding: 0;
+  border: 0;
 }
 
 /* 2025/26: evita inconsistencia en el padding de las listas */
@@ -69,6 +66,12 @@ ul[role="list"],
 ol[role="list"] {
   list-style: none;
   padding: 0;
+  margin: 0;
+}
+
+/* 2026 unifica los bordes de las tablas y evita el modelo separado por defecto. */
+table {
+  border-collapse: collapse;
 }
 
 /* 2026 PROPUESTA para layouts, en su capa */

@@ -2,6 +2,8 @@
 
 A modern CSS framework powered by Sass and PostCSS.
 
+Inspired by **ITCSS** (*Inverted Triangle CSS*) but modernized with tokens and native themes.
+
 ## How to use:
 
 For testing purpose:
@@ -19,7 +21,6 @@ pnpm run build
 ## General aspects:
 
 ### 1. Reset...
-
 
 ## Project Architecture:
 
@@ -61,3 +62,41 @@ framework/
 ## Framework Architecture:
 
 The CSS project consists of the following folders:
+
+```
+styles/
+├── main.scss                # Punto de entrada único (Importa el resto en orden estricto)
+│
+├── abstracts/               # HERRAMIENTAS Y LÓGICA (No generan CSS al compilar)
+│   ├── _functions.scss      # Funciones matemáticas (como el fluid-size)
+│   └── _mixins.scss         # Mixins avanzados de control estructural
+│
+├── tokens/                  # CONFIGURACIÓN (Variables de compilación Sass)
+│   ├── _map-colors.scss     # Mapas de color crudos
+│   ├── _map-spacing.scss    # Escala numérica de espaciados
+│   └── _map-typography.scss # Tamaños y pesos de fuentes
+│
+├── themes/                  # EL MOTOR CLARO/OSCURO (Aquí nace el CSS Semántico)
+│   ├── _root.scss           # Mapeo general y lógica de inicialización
+│   ├── _light.scss          # Definición de variables semánticas modo claro
+│   └── _dark.scss           # Definición de variables semánticas modo oscuro
+│
+├── generic/                 # ESTILOS GENÉRICOS (Baja especificidad)
+│   └── _reset.scss          # El reset moderno 2026
+│
+├── base/                    # ELEMENTOS PUROS (Selectores de etiquetas HTML)
+│   ├── _elements.scss       # body, html, a, etc.
+│   └── _typography.scss     # Estilos de fuentes para h1-h6, p
+│
+├── layout/                  # ESTRUCTURAS MACRO (Layouts de maquetación puros)
+│   ├── _container.scss      # Límites de ancho de pantalla y márgenes
+│   └── _grid-system.scss    # Estructuras globales usando CSS Grid nativo
+│
+├── components/              # COMPONENTES ENCAPSULADOS (Agnósticos)
+│   ├── _button.scss
+│   ├── _card.scss
+│   └── _input.scss
+│
+└── utilities/               # CAPA TRUMPS (Máxima especificidad de un solo uso)
+    └── _generated.scss      # Utilidades autogeneradas por los bucles de Sass
+```
