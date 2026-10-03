@@ -1,7 +1,7 @@
 /* 2026: Evitar que el texto se reajuste al girar el móvil (iOS) y scroll suave */
 html {
   scroll-behavior: smooth; //2026: Se asume que si un usuario hace clic en un ancla, la web baje suavemente, 
-  //a menos que prefiera lo contrario (cosa que ya manejas en tu media query)
+  //a menos que prefiera lo contrario (cosa que ya maneja el media query)
   line-height: 1.5; //2026: mantiene el interlineado homogéneo
 }
 
