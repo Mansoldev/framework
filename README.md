@@ -26,20 +26,31 @@ Install the package in any JavaScript project:
 npm install @mansoldev/framework
 ```
 
-Choose a palette with the interactive CLI, or pass it explicitly:
+Initialize the detected project with the interactive palette picker, or pass a theme explicitly:
 
 ```sh
-npx mansoldev-css
-npx mansoldev-css --theme pastel
+npx mansoldev-css init
+npx mansoldev-css init --theme pastel
+npx mansoldev-css list
 ```
 
-The CLI creates `src/styles/mansoldev-framework.css` with imports for the framework and selected palette. Import that file from your application's JavaScript entry point:
+`init` detects common Vite, Next.js, Angular, and Astro layouts. It generates a CSS entrypoint with imports for the framework and selected palette, then adds an import to a detected global stylesheet or module entrypoint. If no safe entrypoint is found, it prints the import path for you to add manually.
+
+Use `--out path/to/file.css` to choose another generated stylesheet path. Existing generated files are protected: the CLI asks before overwriting in an interactive terminal, or fails with instructions to use `--force` in automation. `--dry-run` prints planned changes without writing files.
+
+Create an additional, independently importable theme stylesheet with `add`:
+
+```sh
+npx mansoldev-css add pastel
+```
+
+`add` writes the theme stylesheet next to the configured entrypoint and records it in `.mansoldevrc.json`; import that file when you want to activate the additional theme. The config records the CLI version and warns when a later CLI version finds an older config. The package exposes the complete framework stylesheet as `@mansoldev/framework/framework.css`, individual palettes under `@mansoldev/framework/themes/`, and metadata in `@mansoldev/framework/manifest.json`.
+
+For projects without a detected entrypoint, import the generated file from your JavaScript entry point:
 
 ```js
 import './styles/mansoldev-framework.css';
 ```
-
-Use `--out path/to/file.css` to choose another output path. The package also exposes the complete framework stylesheet as `@mansoldev/framework/framework.css` and individual palettes as `@mansoldev/framework/themes/neon.css` and `@mansoldev/framework/themes/pastel.css`.
 
 The palette is fixed by the selected stylesheet. `data-theme="light"` or `data-theme="dark"` can independently force the color mode; without it, the browser's preferred color scheme is used. Components consume semantic variables such as `--brand`, `--surface`, `--border`, `--bg-body`, and `--text-main` rather than palette-specific colors.
 
