@@ -12,7 +12,7 @@ interface Props {
 
 const { title = "System Style Framework" } = Astro.props;
 const themes = themeManifest.themes;
-const defaultTheme = themes[0]?.name;
+const defaultTheme = themes.find((theme) => theme.name === 'material')?.name ?? themes[0]?.name;
 ---
 
 <html lang="es" data-palette={defaultTheme}>
@@ -48,6 +48,7 @@ const defaultTheme = themes[0]?.name;
         <nav class="nav">
           <a href="/">Index</a>
           <a href="/htmltags">Html tags</a>
+          <a href="/color-palette">Color palette</a>
         </nav>
       </aside>
 
