@@ -4,6 +4,10 @@ A modern CSS framework powered by Sass and PostCSS.
 
 Inspired by **ITCSS** (*Inverted Triangle CSS*) but modernized with tokens and native themes.
 
+## Node.js requirements
+
+The installed CLI requires Node.js 20.12 or newer. To develop this repository or build the Astro documentation, use Node.js 24.15 or newer; `.nvmrc` selects the Node.js 24 line for development. The current Astro, Vite, and cssnano toolchain has a higher minimum than the CLI runtime.
+
 ## How to use:
 
 For testing purpose:

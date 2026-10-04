@@ -1,5 +1,8 @@
 import { defineConfig } from 'vite';
-import path from 'path';
+import { basename, dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const projectRoot = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   build: {
@@ -7,13 +10,13 @@ export default defineConfig({
     emptyOutDir: false,
     rollupOptions: {
       input: {
-        core: path.resolve(__dirname, 'src/core.scss'),
-        framework: path.resolve(__dirname, 'src/main.scss'),
+        core: resolve(projectRoot, 'src/core.scss'),
+        framework: resolve(projectRoot, 'src/main.scss'),
       },
       output: {
         assetFileNames: (assetInfo) => {
           if (assetInfo.name?.endsWith('.css')) {
-            return path.basename(assetInfo.name);
+            return basename(assetInfo.name);
           }
           return 'assets/[name]-[hash][extname]';
         },

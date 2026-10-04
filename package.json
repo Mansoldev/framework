@@ -16,7 +16,7 @@
 		"./themes/*.css": "./dist/themes/*.css"
 	},
 	"engines": {
-		"node": ">=18"
+		"node": ">=20.12.0"
 	},
 	"bin": {
 		"mansoldev-css": "./bin/cli.js"
@@ -33,13 +33,12 @@
 		"preview": "pnpm exec astro preview --host --root website"
 	},
 	"devDependencies": {
-		"astro": "^6.0.0",
-		"autoprefixer": "^10.5.0",
-		"cssnano": "^8.0.1",
-		"postcss": "^8.5.15",
-		"postcss-cli": "^11.0.1",
-		"sass-embedded": "^1.100.0",
-		"vite": "^6.0.0"
+		"astro": "^7.3.5",
+		"autoprefixer": "^10.6.1",
+		"cssnano": "^9.2.2",
+		"postcss": "^8.5.28",
+		"sass-embedded": "^1.105.1",
+		"vite": "^8.3.2"
 	},
 	"browserslist": [
 		"> 0.5%",
@@ -47,6 +46,6 @@
 		"not dead"
 	],
 	"dependencies": {
-		"@clack/prompts": "^0.11.0"
+		"@clack/prompts": "^1.8.1"
 	}
 }
