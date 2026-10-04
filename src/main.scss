@@ -10,8 +10,8 @@
 // @use "tokens/map-colors";
 // @use "tokens/map-spacing";
 
-// 3. Themes (Variables CSS en :root)
-@use "themes/root";
+// 3. Themes (Variables CSS semánticas)
+@use "themes/all";
 
 // 4. Generic (Resets)
 @use "generic/reset";

@@ -1,17 +1,56 @@
+@use "sass:map";
 @use "../tokens/map-colors" as tokens;
 @use "../tokens/map-spacing" as spacing;
 
-:root {
-  color-scheme: light dark;
+@mixin base {
+  :root {
+    color-scheme: light dark;
 
-  &[data-theme="light"] { color-scheme: light; }
-  &[data-theme="dark"] { color-scheme: dark; }
+    &[data-theme="light"] { color-scheme: light; }
+    &[data-theme="dark"] { color-scheme: dark; }
 
-  // Usamos la función que ya gestiona internamente el map.get
-  --bg-body: #{light-dark(tokens.get-color("neutral", "100"), tokens.get-color("neutral", "900"))};
-  --text-main: #{light-dark(tokens.get-color("neutral", "900"), tokens.get-color("neutral", "100"))};
-
-  @each $key, $value in spacing.$mu-spacers {
-    --mu-space-#{$key}: #{$value};
+    @each $key, $value in spacing.$mu-spacers {
+      --mu-space-#{$key}: #{$value};
+    }
   }
+}
+
+@mixin palette($name, $selector: null) {
+  @if not map.has-key(tokens.$palettes, $name) {
+    @error "Unknown color palette `#{$name}`.";
+  }
+
+  $colors: map.get(tokens.$palettes, $name);
+
+  @if $selector == null {
+    $selector: ':root[data-palette="#{$name}"]';
+  }
+
+  #{$selector} {
+    @each $group, $shades in $colors {
+      @each $shade, $value in $shades {
+        --mu-color-#{$group}-#{$shade}: #{$value};
+      }
+    }
+
+    --bg-body: #{light-dark(map.get($colors, "neutral", "100"), map.get($colors, "neutral", "900"))};
+    --text-main: #{light-dark(map.get($colors, "neutral", "900"), map.get($colors, "neutral", "100"))};
+    --brand: #{light-dark(map.get($colors, "brand", "500"), map.get($colors, "brand", "600"))};
+    --brand-contrast: #{light-dark(map.get($colors, "neutral", "900"), map.get($colors, "neutral", "0"))};
+    --accent: #{map.get($colors, "accent", "500")};
+    --surface: #{light-dark(map.get($colors, "neutral", "0"), map.get($colors, "neutral", "800"))};
+    --border: #{light-dark(map.get($colors, "neutral", "200"), map.get($colors, "neutral", "800"))};
+  }
+}
+
+@mixin all-palettes {
+  @include base;
+
+  @each $name, $colors in tokens.$palettes {
+    @include palette($name);
+  }
+}
+
+@mixin selected-palette($name) {
+  @include palette($name, ":root");
 }

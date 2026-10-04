@@ -18,6 +18,35 @@ Build ready to use:
 pnpm run build
 ```
 
+## Install and select a palette
+
+Install the package in any JavaScript project:
+
+```sh
+npm install @mansoldev/framework
+```
+
+Choose a palette with the interactive CLI, or pass it explicitly:
+
+```sh
+npx mansoldev-css
+npx mansoldev-css --theme pastel
+```
+
+The CLI creates `src/styles/mansoldev-framework.css` with imports for the framework and selected palette. Import that file from your application's JavaScript entry point:
+
+```js
+import './styles/mansoldev-framework.css';
+```
+
+Use `--out path/to/file.css` to choose another output path. The package also exposes the complete framework stylesheet as `@mansoldev/framework/framework.css` and individual palettes as `@mansoldev/framework/themes/neon.css` and `@mansoldev/framework/themes/pastel.css`.
+
+The palette is fixed by the selected stylesheet. `data-theme="light"` or `data-theme="dark"` can independently force the color mode; without it, the browser's preferred color scheme is used. Components consume semantic variables such as `--brand`, `--surface`, `--border`, `--bg-body`, and `--text-main` rather than palette-specific colors.
+
+Each palette also exposes its complete raw scale as CSS custom properties, for example `var(--mu-color-brand-500)`, `var(--mu-color-brand-700)`, and `var(--mu-color-accent-300)`. These are useful for one-off product styling; framework components should continue to use semantic variables.
+
+The Astro documentation loads all palettes and uses `data-palette="neon"` or `data-palette="pastel"` for its live palette selector. Consumer projects do not need that selector.
+
 ## General aspects:
 
 ### 1. Reset...
