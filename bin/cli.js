@@ -210,7 +210,7 @@ function toImportPath(fromFile, toFile) {
 
 function stylesheetFor(themeName) {
   return [
-    '@import "@mansoldev/framework/framework.css";',
+    '@import "@mansoldev/framework/core.css";',
     `@import "@mansoldev/framework/themes/${themeName}.css";`,
     '',
   ].join('\n');

@@ -1,98 +1,20 @@
 @use "sass:map"; // Importante: ahora las funciones cuelgan de aquí
+@use "generated-colors" as generated;
 
-// Palettes contain raw color scales; components use semantic theme variables.
-$palettes: (
-  "neon": (
-    "brand": (
-      "50": oklch(97% 0.025 260),
-      "100": oklch(93% 0.05 260),
-      "200": oklch(87% 0.1 260),
-      "300": oklch(79% 0.16 260),
-      "400": oklch(72% 0.21 260),
-      "500": oklch(66% 0.25 260),
-      "600": oklch(58% 0.23 260),
-      "700": oklch(50% 0.21 260),
-      "800": oklch(42% 0.18 260),
-      "900": oklch(34% 0.15 260),
-      "950": oklch(27% 0.11 260),
-    ),
-    "accent": (
-      "50": oklch(97% 0.035 145),
-      "100": oklch(93% 0.07 145),
-      "200": oklch(87% 0.13 145),
-      "300": oklch(80% 0.2 145),
-      "400": oklch(74% 0.25 145),
-      "500": oklch(68% 0.27 145),
-      "600": oklch(60% 0.24 145),
-      "700": oklch(52% 0.21 145),
-      "800": oklch(44% 0.18 145),
-      "900": oklch(36% 0.15 145),
-      "950": oklch(28% 0.11 145),
-    ),
-    "neutral": (
-      "0": oklch(100% 0 0),
-      "50": oklch(98% 0.008 260),
-      "100": oklch(97% 0.015 260),
-      "200": oklch(91% 0.025 260),
-      "300": oklch(82% 0.025 260),
-      "400": oklch(69% 0.025 260),
-      "500": oklch(56% 0.03 260),
-      "600": oklch(44% 0.03 260),
-      "700": oklch(34% 0.035 260),
-      "800": oklch(25% 0.035 260),
-      "900": oklch(15% 0.03 260),
-      "950": oklch(8% 0.02 260),
-      "1000": oklch(0% 0 0),
-    ),
-  ),
-  "pastel": (
-    "brand": (
-      "50": oklch(98% 0.02 340),
-      "100": oklch(95% 0.04 340),
-      "200": oklch(89% 0.07 340),
-      "300": oklch(83% 0.1 340),
-      "400": oklch(78% 0.13 340),
-      "500": oklch(73% 0.15 340),
-      "600": oklch(66% 0.16 340),
-      "700": oklch(58% 0.15 340),
-      "800": oklch(49% 0.13 340),
-      "900": oklch(40% 0.1 340),
-      "950": oklch(32% 0.08 340),
-    ),
-    "accent": (
-      "50": oklch(98% 0.02 165),
-      "100": oklch(95% 0.04 165),
-      "200": oklch(89% 0.07 165),
-      "300": oklch(83% 0.1 165),
-      "400": oklch(77% 0.13 165),
-      "500": oklch(71% 0.15 165),
-      "600": oklch(64% 0.16 165),
-      "700": oklch(56% 0.15 165),
-      "800": oklch(48% 0.13 165),
-      "900": oklch(39% 0.1 165),
-      "950": oklch(31% 0.08 165),
-    ),
-    "neutral": (
-      "0": oklch(100% 0 0),
-      "50": oklch(98% 0.008 330),
-      "100": oklch(97% 0.015 330),
-      "200": oklch(91% 0.025 330),
-      "300": oklch(83% 0.025 330),
-      "400": oklch(70% 0.025 330),
-      "500": oklch(57% 0.025 330),
-      "600": oklch(45% 0.025 330),
-      "700": oklch(36% 0.02 330),
-      "800": oklch(28% 0.02 330),
-      "900": oklch(17% 0.025 330),
-      "950": oklch(9% 0.02 330),
-      "1000": oklch(0% 0 0),
-    ),
-  ),
-);
+// The build generates this Sass map from the canonical theme manifest.
+$palettes: generated.$palettes;
 
 @function get-color($group, $shade, $palette-name: "neon") {
   @if not map.has-key($palettes, $palette-name) {
     @error "Unknown color palette `#{$palette-name}`.";
+  }
+
+  @if not map.has-key(map.get($palettes, $palette-name), $group) {
+    @error "Unknown color group `#{$group}` in palette `#{$palette-name}`.";
+  }
+
+  @if not map.has-key(map.get(map.get($palettes, $palette-name), $group), $shade) {
+    @error "Unknown shade `#{$shade}` in color group `#{$group}`.";
   }
 
   @return map.get($palettes, $palette-name, $group, $shade);

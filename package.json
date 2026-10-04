@@ -10,6 +10,7 @@
 		"LICENSE"
 	],
 	"exports": {
+		"./core.css": "./dist/core.css",
 		"./framework.css": "./dist/framework.css",
 		"./manifest.json": "./dist/manifest.json",
 		"./themes/*.css": "./dist/themes/*.css"
@@ -21,11 +22,13 @@
 		"mansoldev-css": "./bin/cli.js"
 	},
 	"scripts": {
-		"clean": "node -e \"const fs = require('fs'); ['dist', 'docs', 'temp'].forEach(path => fs.rmSync(path, { recursive: true, force: true }))\"",
-		"dev": "pnpm exec astro dev --root website",
-		"build:framework": "pnpm exec vite build --config vite.config.framework.js && node scripts/build-themes.js",
-		"build:website": "node -e \"const fs=require('fs'); const path=require('path'); const src=path.resolve('dist','framework.css'); const dest=path.resolve('website','public','framework.css'); fs.mkdirSync(path.dirname(dest),{recursive:true}); fs.cpSync(src,dest);\" && pnpm exec astro build --root website && node -e \"const fs=require('fs'); const path=require('path'); const src=path.resolve('website','dist'); const dest=path.resolve('docs'); fs.rmSync(dest,{recursive:true,force:true}); fs.cpSync(src,dest,{recursive:true}); fs.rmSync(src,{recursive:true,force:true});\"",
-		"build": "pnpm run clean && pnpm run build:framework && pnpm run build:website",
+		"clean": "node scripts/clean.js",
+		"dev": "node scripts/build-themes.js && pnpm exec astro dev --root website",
+		"dev:root": "node scripts/build-themes.js && pnpm exec vite --config vite.config.js",
+		"build:framework": "node scripts/clean.js --framework && node scripts/build-themes.js && pnpm exec vite build --config vite.config.framework.js",
+		"build:website": "pnpm run build:framework && node scripts/build-website.js",
+		"build:root": "node scripts/build-themes.js && pnpm exec vite build --config vite.config.js",
+		"build": "pnpm run clean && pnpm run build:website",
 		"test": "pnpm run build:framework && node --test",
 		"preview": "pnpm exec astro preview --host --root website"
 	},

@@ -1,5 +1,6 @@
 ---
 import '../styles/website.scss';
+import themeManifest from '../../../src/themes/manifest.json';
 
 if (!import.meta.env.PROD) {
   await import('../../../src/main.scss');
@@ -10,15 +11,16 @@ interface Props {
 }
 
 const { title = "System Style Framework" } = Astro.props;
+const themes = themeManifest.themes;
+const defaultTheme = themes[0]?.name;
 ---
 
-<html lang="es" data-palette="neon">
+<html lang="es" data-palette={defaultTheme}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>{title}</title>
-
     {import.meta.env.PROD && <link rel="stylesheet" href="/framework.css" />}
   </head>
 
@@ -30,8 +32,9 @@ const { title = "System Style Framework" } = Astro.props;
           🌙 Oscuro
         </button>
         <select id="styleSelect" class="select">
-          <option value="neon">Neón</option>
-          <option value="pastel">Pastel</option>
+          {themes.map((theme) => (
+            <option value={theme.name}>{theme.label}</option>
+          ))}
         </select>
       </div>
     </header>

@@ -1,10 +1,11 @@
 import { spawnSync } from 'node:child_process';
-import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { copyFile, mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { buildThemes } from '../scripts/build-themes.js';
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cliPath = path.join(projectRoot, 'bin/cli.js');
@@ -31,12 +32,72 @@ test('list reads theme names and metadata from the generated manifest', () => {
 test('package exports resolve the manifest and generated theme stylesheets', async () => {
   const manifestPath = fileURLToPath(import.meta.resolve('@mansoldev/framework/manifest.json'));
   const neonPath = fileURLToPath(import.meta.resolve('@mansoldev/framework/themes/neon.css'));
+  const corePath = fileURLToPath(import.meta.resolve('@mansoldev/framework/core.css'));
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
   const neonCss = await readFile(neonPath, 'utf8');
+  const coreCss = await readFile(corePath, 'utf8');
 
-  assert.equal(manifest.version, 1);
+  assert.equal(manifest.schemaVersion, 1);
   assert.ok(manifest.themes.some(({ name }) => name === 'neon'));
   assert.match(neonCss, /--brand:/);
+  assert.match(coreCss, /--mu-space-0:/);
+  assert.doesNotMatch(coreCss, /--brand:/);
+});
+
+test('adding a theme to the manifest generates Sass data and CSS without a theme-specific Sass file', async (context) => {
+  const root = await createTempProject();
+  context.after(() => rm(root, { recursive: true, force: true }));
+  const sourceRoot = path.join(root, 'src');
+  await mkdir(path.join(sourceRoot, 'tokens'), { recursive: true });
+  await mkdir(path.join(sourceRoot, 'themes'), { recursive: true });
+
+  for (const source of [
+    ['src/tokens/_map-colors.scss', 'tokens/_map-colors.scss'],
+    ['src/tokens/_map-spacing.scss', 'tokens/_map-spacing.scss'],
+    ['src/themes/_root.scss', 'themes/_root.scss'],
+  ]) {
+    await copyFile(path.join(projectRoot, source[0]), path.join(sourceRoot, source[1]));
+  }
+
+  const manifest = JSON.parse(await readFile(path.join(projectRoot, 'src/themes/manifest.json'), 'utf8'));
+  const thirdTheme = structuredClone(manifest.themes[1]);
+  thirdTheme.name = 'coral';
+  thirdTheme.label = 'Coral';
+  thirdTheme.description = 'Coral palette generated from manifest data.';
+  manifest.themes.push(thirdTheme);
+  await writeFile(path.join(sourceRoot, 'themes/manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+
+  await buildThemes(root);
+
+  const generatedSass = await readFile(path.join(sourceRoot, 'tokens/_generated-colors.scss'), 'utf8');
+  const generatedCss = await readFile(path.join(root, 'dist/themes/coral.css'), 'utf8');
+  const distributedManifest = JSON.parse(await readFile(path.join(root, 'dist/manifest.json'), 'utf8'));
+  assert.match(generatedSass, /"coral"/);
+  assert.match(generatedCss, /--brand:/);
+  assert.ok(distributedManifest.themes.some(({ name }) => name === 'coral'));
+  await assert.rejects(readFile(path.join(sourceRoot, 'themes/coral.scss')));
+});
+
+test('invalid manifest colors fail with the theme and tone location', async (context) => {
+  const root = await createTempProject();
+  context.after(() => rm(root, { recursive: true, force: true }));
+  const sourceRoot = path.join(root, 'src');
+  await mkdir(path.join(sourceRoot, 'tokens'), { recursive: true });
+  await mkdir(path.join(sourceRoot, 'themes'), { recursive: true });
+
+  for (const source of [
+    ['src/tokens/_map-colors.scss', 'tokens/_map-colors.scss'],
+    ['src/tokens/_map-spacing.scss', 'tokens/_map-spacing.scss'],
+    ['src/themes/_root.scss', 'themes/_root.scss'],
+  ]) {
+    await copyFile(path.join(projectRoot, source[0]), path.join(sourceRoot, source[1]));
+  }
+
+  const manifest = JSON.parse(await readFile(path.join(projectRoot, 'src/themes/manifest.json'), 'utf8'));
+  manifest.themes[0].colors.brand['100'] = 'not-a-color';
+  await writeFile(path.join(sourceRoot, 'themes/manifest.json'), JSON.stringify(manifest));
+
+  await assert.rejects(buildThemes(root), /Invalid color at neon\/brand\/100/);
 });
 
 test('init integrates with an existing Vite stylesheet and is idempotent', async (context) => {
@@ -49,7 +110,9 @@ test('init integrates with an existing Vite stylesheet and is idempotent', async
   const first = runCli(root, ['init', '--theme=neon']);
   assert.equal(first.status, 0, first.stderr);
   assert.match(await readFile(path.join(root, 'src/index.css'), 'utf8'), /^@import "\.\/mansoldev-framework\.css";/);
-  assert.match(await readFile(path.join(root, 'src/mansoldev-framework.css'), 'utf8'), /themes\/neon\.css/);
+  const generatedCss = await readFile(path.join(root, 'src/mansoldev-framework.css'), 'utf8');
+  assert.match(generatedCss, /framework\/core\.css/);
+  assert.match(generatedCss, /themes\/neon\.css/);
   assert.equal(JSON.parse(await readFile(path.join(root, '.mansoldevrc.json'), 'utf8')).projectType, 'vite');
 
   const before = await readFile(path.join(root, 'src/index.css'), 'utf8');
