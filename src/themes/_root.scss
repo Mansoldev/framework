@@ -1,4 +1,5 @@
 @use "sass:map";
+@use "sass:meta";
 @use "../tokens/map-colors" as tokens;
 @use "../tokens/map-spacing" as spacing;
 
@@ -15,12 +16,25 @@
   }
 }
 
+@function role-family($roles, $role, $fallback) {
+  @if $roles == null or meta.type-of($roles) != "map" {
+    @return $fallback;
+  }
+
+  @if map.has-key($roles, $role) {
+    @return map.get($roles, $role);
+  }
+
+  @return $fallback;
+}
+
 @mixin palette($name, $selector: null) {
   @if not map.has-key(tokens.$palettes, $name) {
     @error "Unknown color palette `#{$name}`.";
   }
 
   $colors: map.get(tokens.$palettes, $name);
+  $roles: map.get(tokens.$roles, $name, ());
 
   @if $selector == null {
     $selector: ':root[data-palette="#{$name}"]';
@@ -33,13 +47,29 @@
       }
     }
 
-    --bg-body: #{light-dark(map.get($colors, "neutral", "100"), map.get($colors, "neutral", "900"))};
-    --text-main: #{light-dark(map.get($colors, "neutral", "900"), map.get($colors, "neutral", "100"))};
-    --brand: #{light-dark(map.get($colors, "brand", "500"), map.get($colors, "brand", "600"))};
-    --brand-contrast: #{light-dark(map.get($colors, "neutral", "900"), map.get($colors, "neutral", "0"))};
-    --accent: #{map.get($colors, "accent", "500")};
-    --surface: #{light-dark(map.get($colors, "neutral", "0"), map.get($colors, "neutral", "800"))};
-    --border: #{light-dark(map.get($colors, "neutral", "200"), map.get($colors, "neutral", "800"))};
+    $neutralFamily: role-family($roles, "neutral", "slate");
+    $primaryFamily: role-family($roles, "primary", "blue");
+    $secondaryFamily: role-family($roles, "secondary", "indigo");
+    $accentFamily: role-family($roles, "accent", "cyan");
+    $successFamily: role-family($roles, "success", "green");
+    $warningFamily: role-family($roles, "warning", "amber");
+    $dangerFamily: role-family($roles, "danger", "red");
+
+    --bg-body: #{light-dark(map.get($colors, $neutralFamily, "100"), map.get($colors, $neutralFamily, "900"))};
+    --text-main: #{light-dark(map.get($colors, $neutralFamily, "900"), map.get($colors, $neutralFamily, "100"))};
+    --brand: #{light-dark(map.get($colors, $primaryFamily, "500"), map.get($colors, $primaryFamily, "600"))};
+    --brand-contrast: #{light-dark(map.get($colors, $neutralFamily, "900"), map.get($colors, $neutralFamily, "0"))};
+    --accent: #{light-dark(map.get($colors, $accentFamily, "500"), map.get($colors, $accentFamily, "600"))};
+    --surface: #{light-dark(map.get($colors, $neutralFamily, "0"), map.get($colors, $neutralFamily, "800"))};
+    --border: #{light-dark(map.get($colors, $neutralFamily, "200"), map.get($colors, $neutralFamily, "800"))};
+
+    --color-primary: #{light-dark(map.get($colors, $primaryFamily, "500"), map.get($colors, $primaryFamily, "600"))};
+    --color-secondary: #{light-dark(map.get($colors, $secondaryFamily, "500"), map.get($colors, $secondaryFamily, "600"))};
+    --color-accent: #{light-dark(map.get($colors, $accentFamily, "500"), map.get($colors, $accentFamily, "600"))};
+    --color-success: #{light-dark(map.get($colors, $successFamily, "500"), map.get($colors, $successFamily, "600"))};
+    --color-warning: #{light-dark(map.get($colors, $warningFamily, "500"), map.get($colors, $warningFamily, "600"))};
+    --color-danger: #{light-dark(map.get($colors, $dangerFamily, "500"), map.get($colors, $dangerFamily, "600"))};
+    --color-neutral: #{light-dark(map.get($colors, $neutralFamily, "500"), map.get($colors, $neutralFamily, "600"))};
   }
 }
 

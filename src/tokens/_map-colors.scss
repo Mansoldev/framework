@@ -3,6 +3,7 @@
 
 // The build generates this Sass map from the canonical theme manifest.
 $palettes: generated.$palettes;
+$roles: generated.$roles;
 
 @function get-color($group, $shade, $palette-name: "neon") {
   @if not map.has-key($palettes, $palette-name) {

@@ -29,6 +29,21 @@ test('list reads theme names and metadata from the generated manifest', () => {
   assert.match(result.stdout, /pastel.*Soft rose/);
 });
 
+test('theme manifests expose full family color scales and semantic aliases', async () => {
+  const manifest = JSON.parse(await readFile(path.join(projectRoot, 'src/themes/manifest.json'), 'utf8'));
+  const firstTheme = manifest.themes[0];
+
+  assert.ok(firstTheme.colors.blue);
+  assert.ok(firstTheme.colors.indigo);
+  assert.ok(firstTheme.colors.green);
+  assert.ok(firstTheme.colors.amber);
+  assert.ok(firstTheme.colors.red);
+  assert.ok(firstTheme.colors.slate);
+  assert.ok(firstTheme.roles.primary);
+  assert.equal(firstTheme.roles.primary, 'blue');
+  assert.equal(firstTheme.roles.success, 'green');
+});
+
 test('package exports resolve the manifest and generated theme stylesheets', async () => {
   const manifestPath = fileURLToPath(import.meta.resolve('@mansoldev/framework/manifest.json'));
   const neonPath = fileURLToPath(import.meta.resolve('@mansoldev/framework/themes/neon.css'));
@@ -94,10 +109,10 @@ test('invalid manifest colors fail with the theme and tone location', async (con
   }
 
   const manifest = JSON.parse(await readFile(path.join(projectRoot, 'src/themes/manifest.json'), 'utf8'));
-  manifest.themes[0].colors.brand['100'] = 'not-a-color';
+  manifest.themes[0].colors.blue['100'] = 'not-a-color';
   await writeFile(path.join(sourceRoot, 'themes/manifest.json'), JSON.stringify(manifest));
 
-  await assert.rejects(buildThemes(root), /Invalid color at neon\/brand\/100/);
+  await assert.rejects(buildThemes(root), /Invalid color at neon\/blue\/100/);
 });
 
 test('init integrates with an existing Vite stylesheet and is idempotent', async (context) => {

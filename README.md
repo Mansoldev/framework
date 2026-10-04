@@ -114,9 +114,9 @@ src/
 
 ## Theme source and outputs
 
-To add a theme, add one object to `src/themes/manifest.json` with a unique lowercase `name`, `label`, `description`, and complete `brand`, `accent`, and `neutral` maps. Use the same tone keys as the existing themes. Then run `pnpm build:framework` (or `pnpm build`); the build validates each color and generates the Sass map, theme CSS, and distributed manifest. Astro imports the same JSON manifest to render its selector. Do not create a per-theme Sass file or add theme names to the CLI, Astro, or package exports.
+To add a theme, add one object to `src/themes/manifest.json` with a unique lowercase `name`, `label`, `description`, and complete family scales such as `blue`, `indigo`, `green`, `amber`, `red`, `slate`, and any other palette families you need for the design language. Then run `pnpm build:framework` (or `pnpm build`); the build validates each color and generates the Sass map, theme CSS, and distributed manifest. Astro imports the same JSON manifest to render its selector. Do not create a per-theme Sass file or add theme names to the CLI, Astro, or package exports.
 
-To add a tone to an existing color group, add that tone to the group in every theme in the manifest and update the expected tone list in `scripts/build-themes.js`. To add a new color group, add its scale to every theme and register the group in that script's `expectedGroups`. The raw CSS variables are emitted generically; add a semantic role in `src/themes/_root.scss` only if framework components need to consume that group by role.
+The manifest is the single source of truth. Add or extend family groups directly in the manifest; the build script validates the actual scale shape instead of hardcoding legacy `brand`/`accent`/`neutral` arrays. The raw CSS variables are emitted generically; add a semantic role in `src/themes/_root.scss` only if framework components need to consume a family by role.
 
 `src/tokens/_generated-colors.scss` will contain the same values after generation, but it is an output, not another source of truth. Editing it directly is temporary: the next `pnpm dev`, `pnpm build`, or `pnpm test` regenerates it from the manifest.
 
