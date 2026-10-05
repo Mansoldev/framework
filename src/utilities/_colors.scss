@@ -1,0 +1,58 @@
+// Composable semantic color utilities backed by the active theme roles.
+$mu-background-colors: (
+  body: var(--mu-color-bg-body),
+  surface: var(--mu-color-surface),
+  primary: var(--mu-color-primary),
+  secondary: var(--mu-color-secondary),
+  accent: var(--mu-color-accent),
+  success: var(--mu-color-success),
+  warning: var(--mu-color-warning),
+  danger: var(--mu-color-danger),
+  info: var(--mu-color-info),
+  neutral: var(--mu-color-neutral)
+);
+
+$mu-text-colors: (
+  main: var(--mu-color-text-main),
+  muted: var(--mu-color-text-muted),
+  primary: var(--mu-color-primary),
+  on-primary: var(--mu-color-on-primary),
+  secondary: var(--mu-color-secondary),
+  on-secondary: var(--mu-color-on-secondary),
+  accent: var(--mu-color-accent),
+  success: var(--mu-color-success),
+  warning: var(--mu-color-warning),
+  danger: var(--mu-color-danger),
+  info: var(--mu-color-info),
+  neutral: var(--mu-color-neutral)
+);
+
+$mu-border-colors: (
+  default: var(--mu-color-border),
+  strong: var(--mu-color-border-strong),
+  primary: var(--mu-color-primary),
+  secondary: var(--mu-color-secondary),
+  accent: var(--mu-color-accent),
+  success: var(--mu-color-success),
+  warning: var(--mu-color-warning),
+  danger: var(--mu-color-danger),
+  info: var(--mu-color-info)
+);
+
+@each $name, $value in $mu-background-colors {
+  .mu-bg-#{$name} {
+    background-color: $value;
+  }
+}
+
+@each $name, $value in $mu-text-colors {
+  .mu-text-#{$name} {
+    color: $value;
+  }
+}
+
+@each $name, $value in $mu-border-colors {
+  .mu-border-#{$name} {
+    border-color: $value;
+  }
+}

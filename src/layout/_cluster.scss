@@ -1,0 +1,17 @@
+// Wraps related items into a horizontally flowing group.
+.mu-cluster {
+  --mu-cluster-gap: var(--mu-space-3);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--mu-cluster-gap);
+}
+
+.mu-cluster--between {
+  justify-content: space-between;
+}
+
+.mu-cluster--center {
+  justify-content: center;
+}

@@ -56,9 +56,18 @@ For projects without a detected entrypoint, import the generated file from your 
 import './styles/mansoldev-framework.css';
 ```
 
-The palette is fixed by the selected stylesheet. `data-theme="light"` or `data-theme="dark"` can independently force the color mode; without it, the browser's preferred color scheme is used. Components consume semantic variables such as `--brand`, `--surface`, `--border`, `--bg-body`, and `--text-main` rather than palette-specific colors.
+The palette is fixed by the selected stylesheet. `data-theme="light"` or `data-theme="dark"` can independently force the color mode; without it, the browser's preferred color scheme is used. Components use semantic color properties such as `--mu-color-primary`, `--mu-color-surface`, `--mu-color-border`, and `--mu-color-text-main`, never palette-specific families.
 
-Each palette also exposes its complete raw scale as CSS custom properties, for example `var(--mu-color-brand-500)`, `var(--mu-color-brand-700)`, and `var(--mu-color-accent-300)`. These are useful for one-off product styling; framework components should continue to use semantic variables.
+Each palette also exposes its complete raw scale as CSS custom properties, for example `var(--mu-color-blue-500)`, `var(--mu-color-blue-700)`, and `var(--mu-color-rose-300)`. These are useful for product-specific styling; reusable framework styles should prefer semantic roles.
+
+The framework uses a shared `mu-` namespace for classes and CSS custom properties. The base `.mu-btn` is deliberately neutral; compose color utilities when a context calls for emphasis:
+
+```html
+<button class="mu-btn">Neutral action</button>
+<button class="mu-btn mu-bg-primary mu-text-on-primary">Primary action</button>
+```
+
+Use `.mu-container`, `.mu-stack`, `.mu-cluster`, and `.mu-grid` for page and content layout. Tokens such as spacing, typography, radius, sizing, motion, and elevation are emitted globally; Sass-only maps such as breakpoints remain compile-time configuration.
 
 The Astro documentation loads all palettes and uses `data-palette="neon"` or `data-palette="pastel"` for its live palette selector. Consumer projects do not need that selector.
 
@@ -68,12 +77,17 @@ The Astro documentation loads all palettes and uses `data-palette="neon"` or `da
 bin/                         # npm CLI
 scripts/                     # theme generation, clean, and website build
 src/
+    tokens/                     # Sass scales and the shared CSS custom-property emitter
     themes/manifest.json        # canonical theme names, metadata, and color scales
-    themes/_root.scss           # shared semantic mapping and light/dark behavior
-    tokens/_map-colors.scss     # Sass API backed by generated manifest data
+    themes/_root.scss           # semantic color roles and light/dark behavior
+    generic/                    # reset and cross-browser defaults
+    base/                       # defaults for semantic HTML elements
+    layout/                     # container, stack, cluster, and grid primitives
+    components/                 # neutral reusable controls and content patterns
+    utilities/                  # composable spacing and semantic color helpers
     core.scss                   # framework layers without a color palette
     main.scss                   # complete showcase stylesheet
-    _framework.scss             # shared ITCSS layers
+    _framework.scss             # ordered ITCSS layer imports
 website/                      # Astro documentation
 index.html                    # optional Vite demo driven by the same manifest
 dist/                         # generated package artifacts (not committed)
@@ -86,31 +100,41 @@ The source follows the ITCSS layer order. Theme data has one editable source: `s
 
 ```text
 src/
-├── abstracts/                 # Sass-only tools such as functions and mixins (reserved layer; not populated yet)
+├── abstracts/                 # Sass-only tools, added when shared logic needs them
 ├── tokens/
-│   ├── _map-colors.scss       # Sass API; exposes the generated palette map and get-color()
+│   ├── _map-colors.scss       # Sass API; exposes generated palette data and get-color()
 │   ├── _generated-colors.scss # Build output from themes/manifest.json; do not edit
-│   └── _map-spacing.scss      # Spacing scale exported as --mu-space-* custom properties
+│   ├── _map-spacing.scss      # Spacing scale
+│   ├── _map-typography.scss   # Font families, sizes, weights, and line heights
+│   ├── _map-sizing.scss       # Control, icon, content, and container dimensions
+│   ├── _map-radius.scss       # Corner-radius scale
+│   ├── _map-border.scss       # Border-width scale
+│   ├── _map-motion.scss       # Durations and easing curves
+│   ├── _map-elevation.scss    # Shadow scale
+│   ├── _map-breakpoints.scss  # Sass-only media-query breakpoints
+│   └── _root.scss             # Emits global --mu-* design tokens
 ├── themes/
 │   ├── manifest.json          # The only editable source for palette values and theme metadata
-│   ├── _root.scss             # Shared color-scheme rules and semantic color mapping
-│   ├── _core.scss             # Theme-independent color-scheme and spacing variables
+│   ├── _root.scss             # Theme roles and light/dark color mappings
+│   ├── _core.scss             # Emits shared tokens and color-scheme behavior
 │   └── _all.scss              # Emits selectors for every manifest palette; used by the showcase
 ├── generic/
 │   └── _reset.scss            # Low-specificity reset and cross-browser defaults
 ├── base/
 │   └── _elements.scss         # Defaults for HTML elements such as body and headings
-├── layout/                    # Macro layout primitives (reserved layer; not populated yet)
-├── components/
-│   └── _button.scss           # Encapsulated, reusable component styles
+├── layout/                    # Container and flow/grid composition primitives
+├── components/                # Button, link, form controls, choices, alert, and card
 ├── utilities/
-│   └── _generated.scss        # Generated spacing utility classes
-├── _framework.scss            # Imports generic, base, components, and utilities in layer order
+│   ├── _spacing.scss          # Spacing utility classes generated from the Sass scale
+│   └── _colors.scss           # Semantic background, text, and border utilities
+├── _framework.scss            # Imports layers in generic-to-utility order
 ├── core.scss                  # Theme-independent variables plus _framework.scss
 └── main.scss                  # All palette selectors plus _framework.scss; showcase/legacy entry
 ```
 
-`core.css` is the lean consumer entry: framework layers without palette values. Import one `themes/<name>.css` alongside it. `framework.css` is the all-palettes showcase entry. Color groups and tones are emitted as `--mu-color-<group>-<tone>`; component-facing roles such as `--brand`, `--surface`, and `--border` are mapped once in `_root.scss`.
+`core.css` is the lean consumer entry: framework layers and non-color design tokens without palette values. Import one `themes/<name>.css` alongside it. `framework.css` is the all-palettes showcase entry. Raw color groups and tones are emitted as `--mu-color-<group>-<tone>`; semantic roles such as `--mu-color-primary`, `--mu-color-surface`, and `--mu-color-border` are mapped once in `_root.scss`.
+
+Tokens are shared design decisions, not a requirement to replace every CSS literal. Global runtime tokens live in `:root`; component-specific custom properties live on their component class; Sass maps used only for compilation, especially breakpoints, are not emitted as CSS variables. Use relative units according to their relationship: `rem` for type-related scales, `em` for component-relative sizing, percentages for container-relative dimensions, and pixels for details such as thin borders.
 
 ## Theme source and outputs
 
@@ -124,7 +148,7 @@ The build publishes:
 
 - `@mansoldev/framework/core.css`: reset, base, components, utilities, spacing variables, and color-scheme behavior without a palette.
 - `@mansoldev/framework/themes/<name>.css`: one palette's raw color scale and semantic variables.
-- `@mansoldev/framework/framework.css`: the complete framework with every palette, intended for the documentation showcase and migration compatibility.
+- `@mansoldev/framework/framework.css`: the complete framework with every palette, intended for the documentation showcase.
 - `@mansoldev/framework/manifest.json`: validated theme metadata and color scales.
 
 Palette and color mode are independent. `data-palette="<name>"` selects a palette in the showcase CSS; `data-theme="light"` or `data-theme="dark"` overrides the browser color scheme. Without `data-theme`, the browser preference is used.

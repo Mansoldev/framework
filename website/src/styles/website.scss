@@ -5,12 +5,12 @@
 }
 
 .topbar {
-  height: 60px;
+  //height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: var(--mu-border-width-1) solid var(--mu-color-border);
 }
 
 .topbar__actions {
@@ -21,7 +21,7 @@
 
 .sidebar {
   width: 260px;
-  border-right: 1px solid var(--border);
+  border-right: var(--mu-border-width-1) solid var(--mu-color-border);
   padding: 16px;
 }
 
@@ -30,8 +30,8 @@
   gap: 8px;
   align-items: center;
   padding: 8px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: var(--mu-border-width-1) solid var(--mu-color-border);
+  border-radius: var(--mu-radius-md);
   margin-bottom: 16px;
 }
 
@@ -55,7 +55,7 @@
 }
 
 .nav a:hover {
-  background: var(--surface);
+  background: var(--mu-color-surface);
 }
 
 .content {
@@ -66,7 +66,7 @@
 #themeToggle {
   padding: 8px 12px;
   border-radius: 8px;
-  border: 1px solid var(--border);
+  border: var(--mu-border-width-1) solid var(--mu-color-border);
   cursor: pointer;
 }
 
@@ -85,7 +85,7 @@
 
 .hero-note {
   padding: 1.5rem;
-  border: 1px solid var(--border);
+  border: var(--mu-border-width-1) solid var(--mu-color-border);
   border-radius: 1rem;
 }
 
@@ -96,7 +96,7 @@
 .section-title {
   margin-bottom: 1.5rem;
   padding-left: 1rem;
-  border-left: 4px solid var(--brand);
+  border-left: var(--mu-border-width-4) solid var(--mu-color-primary);
 }
 
 .docs-grid {
@@ -114,9 +114,9 @@
 
 .docs-card {
   padding: 2rem;
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  background: var(--surface);
+  border: var(--mu-border-width-1) solid var(--mu-color-border);
+  border-radius: var(--mu-radius-xl);
+  background: var(--mu-color-surface);
 }
 
 .docs-card > * + * {
@@ -131,16 +131,16 @@
 }
 
 .palette-card {
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  background: var(--surface);
+  border: var(--mu-border-width-1) solid var(--mu-color-border);
+  border-radius: var(--mu-radius-xl);
+  background: var(--mu-color-surface);
   overflow: hidden;
 }
 
 .palette-card__header {
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  background: color-mix(in srgb, var(--brand) 14%, transparent);
+  border-bottom: var(--mu-border-width-1) solid var(--mu-color-border);
+  background: color-mix(in srgb, var(--mu-color-primary) 14%, transparent);
 }
 
 .palette-card__body {

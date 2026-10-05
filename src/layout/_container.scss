@@ -1,0 +1,28 @@
+// Centers content and applies responsive inline gutters and a maximum width.
+@use "sass:map";
+@use "../tokens/map-breakpoints" as breakpoints;
+
+.mu-container {
+  --mu-container-gutter: var(--mu-space-4);
+
+  width: min(calc(100% - 2 * var(--mu-container-gutter)), var(--mu-size-container-xl));
+  margin-inline: auto;
+}
+
+.mu-container--sm {
+  max-width: var(--mu-size-container-sm);
+}
+
+.mu-container--md {
+  max-width: var(--mu-size-container-md);
+}
+
+.mu-container--lg {
+  max-width: var(--mu-size-container-lg);
+}
+
+@media (min-width: map.get(breakpoints.$mu-breakpoints, md)) {
+  .mu-container {
+    --mu-container-gutter: var(--mu-space-6);
+  }
+}

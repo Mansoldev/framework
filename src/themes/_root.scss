@@ -1,18 +1,16 @@
 @use "sass:map";
 @use "sass:meta";
 @use "../tokens/map-colors" as tokens;
-@use "../tokens/map-spacing" as spacing;
+@use "../tokens/root" as token-root;
 
 @mixin base {
+  @include token-root.emit;
+
   :root {
     color-scheme: light dark;
 
     &[data-theme="light"] { color-scheme: light; }
     &[data-theme="dark"] { color-scheme: dark; }
-
-    @each $key, $value in spacing.$mu-spacers {
-      --mu-space-#{$key}: #{$value};
-    }
   }
 }
 
@@ -54,22 +52,26 @@
     $successFamily: role-family($roles, "success", "green");
     $warningFamily: role-family($roles, "warning", "amber");
     $dangerFamily: role-family($roles, "danger", "red");
+    $infoFamily: role-family($roles, "info", "cyan");
 
-    --bg-body: #{light-dark(map.get($colors, $neutralFamily, "100"), map.get($colors, $neutralFamily, "900"))};
-    --text-main: #{light-dark(map.get($colors, $neutralFamily, "900"), map.get($colors, $neutralFamily, "100"))};
-    --brand: #{light-dark(map.get($colors, $primaryFamily, "500"), map.get($colors, $primaryFamily, "600"))};
-    --brand-contrast: #{light-dark(map.get($colors, $neutralFamily, "900"), map.get($colors, $neutralFamily, "0"))};
-    --accent: #{light-dark(map.get($colors, $accentFamily, "500"), map.get($colors, $accentFamily, "600"))};
-    --surface: #{light-dark(map.get($colors, $neutralFamily, "0"), map.get($colors, $neutralFamily, "800"))};
-    --border: #{light-dark(map.get($colors, $neutralFamily, "200"), map.get($colors, $neutralFamily, "800"))};
-
-    --color-primary: #{light-dark(map.get($colors, $primaryFamily, "500"), map.get($colors, $primaryFamily, "600"))};
-    --color-secondary: #{light-dark(map.get($colors, $secondaryFamily, "500"), map.get($colors, $secondaryFamily, "600"))};
-    --color-accent: #{light-dark(map.get($colors, $accentFamily, "500"), map.get($colors, $accentFamily, "600"))};
-    --color-success: #{light-dark(map.get($colors, $successFamily, "500"), map.get($colors, $successFamily, "600"))};
-    --color-warning: #{light-dark(map.get($colors, $warningFamily, "500"), map.get($colors, $warningFamily, "600"))};
-    --color-danger: #{light-dark(map.get($colors, $dangerFamily, "500"), map.get($colors, $dangerFamily, "600"))};
-    --color-neutral: #{light-dark(map.get($colors, $neutralFamily, "500"), map.get($colors, $neutralFamily, "600"))};
+    --mu-color-bg-body: #{light-dark(map.get($colors, $neutralFamily, "100"), map.get($colors, $neutralFamily, "900"))};
+    --mu-color-text-main: #{light-dark(map.get($colors, $neutralFamily, "900"), map.get($colors, $neutralFamily, "100"))};
+    --mu-color-text-muted: #{light-dark(map.get($colors, $neutralFamily, "600"), map.get($colors, $neutralFamily, "300"))};
+    --mu-color-surface: #{light-dark(map.get($colors, $neutralFamily, "0"), map.get($colors, $neutralFamily, "800"))};
+    --mu-color-surface-hover: #{light-dark(map.get($colors, $neutralFamily, "100"), map.get($colors, $neutralFamily, "700"))};
+    --mu-color-border: #{light-dark(map.get($colors, $neutralFamily, "200"), map.get($colors, $neutralFamily, "700"))};
+    --mu-color-border-strong: #{light-dark(map.get($colors, $neutralFamily, "400"), map.get($colors, $neutralFamily, "500"))};
+    --mu-color-primary: #{light-dark(map.get($colors, $primaryFamily, "500"), map.get($colors, $primaryFamily, "600"))};
+    --mu-color-on-primary: #{light-dark(map.get($colors, $neutralFamily, "900"), map.get($colors, $neutralFamily, "0"))};
+    --mu-color-secondary: #{light-dark(map.get($colors, $secondaryFamily, "500"), map.get($colors, $secondaryFamily, "600"))};
+    --mu-color-on-secondary: #{light-dark(map.get($colors, $neutralFamily, "900"), map.get($colors, $neutralFamily, "0"))};
+    --mu-color-accent: #{light-dark(map.get($colors, $accentFamily, "500"), map.get($colors, $accentFamily, "600"))};
+    --mu-color-success: #{light-dark(map.get($colors, $successFamily, "500"), map.get($colors, $successFamily, "600"))};
+    --mu-color-warning: #{light-dark(map.get($colors, $warningFamily, "500"), map.get($colors, $warningFamily, "600"))};
+    --mu-color-danger: #{light-dark(map.get($colors, $dangerFamily, "500"), map.get($colors, $dangerFamily, "600"))};
+    --mu-color-info: #{light-dark(map.get($colors, $infoFamily, "500"), map.get($colors, $infoFamily, "600"))};
+    --mu-color-neutral: #{light-dark(map.get($colors, $neutralFamily, "500"), map.get($colors, $neutralFamily, "600"))};
+    --mu-color-focus: #{light-dark(map.get($colors, $primaryFamily, "600"), map.get($colors, $primaryFamily, "400"))};
   }
 }
 

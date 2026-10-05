@@ -20,6 +20,17 @@ const defaultTheme = themes.find((theme) => theme.name === 'material')?.name ?? 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <script is:inline>
+      try {
+        const savedMode = localStorage.getItem('mu-theme-mode');
+        if (savedMode === 'light' || savedMode === 'dark') {
+          document.documentElement.dataset.theme = savedMode;
+        }
+      } catch {
+        // The system color scheme remains the fallback when storage is unavailable.
+      }
+    </script>
+
     <title>{title}</title>
     {import.meta.env.PROD && <link rel="stylesheet" href="/framework.css" />}
   </head>
@@ -28,10 +39,10 @@ const defaultTheme = themes.find((theme) => theme.name === 'material')?.name ?? 
     <header class="topbar">
       <h1 class="topbar__title">Mansoldev Framework CSS</h1>
       <div class="topbar__actions">
-        <button id="themeToggle" class="mc-btn mc-btn--secondary">
-          🌙 Oscuro
+        <button id="themeToggle" class="mu-btn" type="button" aria-label="Cambiar a modo oscuro" aria-pressed="false">
+          🌙 Modo oscuro
         </button>
-        <select id="styleSelect" class="select">
+        <select id="styleSelect" class="mu-form-control">
           {themes.map((theme) => (
             <option value={theme.name}>{theme.label}</option>
           ))}
@@ -61,25 +72,39 @@ const defaultTheme = themes.find((theme) => theme.name === 'material')?.name ?? 
       const root = document.documentElement;
       const btn = document.getElementById('themeToggle');
       const paletteSelect = document.getElementById('styleSelect');
+      const preferenceKey = 'mu-theme-mode';
+      const systemColorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+      const currentMode = () => root.dataset.theme ?? (systemColorScheme.matches ? 'dark' : 'light');
+      const syncModeControl = () => {
+        const isDark = currentMode() === 'dark';
+        btn.setAttribute('aria-pressed', String(isDark));
+        btn.setAttribute('aria-label', isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+        btn.textContent = isDark ? '☀️ Modo claro' : '🌙 Modo oscuro';
+      };
 
       root.dataset.palette = paletteSelect.value;
+      syncModeControl();
 
       paletteSelect.addEventListener('change', () => {
         root.dataset.palette = paletteSelect.value;
       });
 
-      btn.addEventListener('click', () => {
-        const isDark = root.dataset.theme
-          ? root.dataset.theme === 'dark'
-          : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      systemColorScheme.addEventListener('change', () => {
+        if (!root.dataset.theme) syncModeControl();
+      });
 
-        if (isDark) {
-          root.dataset.theme = 'light';
-          btn.textContent = '🌙 Modo Oscuro';
-        } else {
-          root.dataset.theme = 'dark';
-          btn.textContent = '☀️ Modo Claro';
+      btn.addEventListener('click', () => {
+        const nextMode = currentMode() === 'dark' ? 'light' : 'dark';
+        root.dataset.theme = nextMode;
+
+        try {
+          localStorage.setItem(preferenceKey, nextMode);
+        } catch {
+          // The current page still changes mode when storage is unavailable.
         }
+
+        syncModeControl();
       });
     </script>
   </body>

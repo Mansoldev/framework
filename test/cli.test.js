@@ -29,7 +29,7 @@ test('list reads theme names and metadata from the generated manifest', () => {
   assert.match(result.stdout, /pastel.*Soft rose/);
 });
 
-test('theme manifests expose full family color scales and semantic aliases', async () => {
+test('theme manifests expose full family color scales and semantic roles', async () => {
   const manifest = JSON.parse(await readFile(path.join(projectRoot, 'src/themes/manifest.json'), 'utf8'));
   const firstTheme = manifest.themes[0];
 
@@ -54,9 +54,13 @@ test('package exports resolve the manifest and generated theme stylesheets', asy
 
   assert.equal(manifest.schemaVersion, 1);
   assert.ok(manifest.themes.some(({ name }) => name === 'neon'));
-  assert.match(neonCss, /--brand:/);
+  assert.match(neonCss, /--mu-color-primary:/);
   assert.match(coreCss, /--mu-space-0:/);
-  assert.doesNotMatch(coreCss, /--brand:/);
+  assert.match(coreCss, /--mu-font-size-base:/);
+  assert.match(coreCss, /\.mu-btn/);
+  assert.match(coreCss, /\.mu-bg-primary/);
+  assert.doesNotMatch(coreCss, /--mu-color-primary:/);
+  assert.doesNotMatch(coreCss, /--brand:|\.m-btn/);
 });
 
 test('adding a theme to the manifest generates Sass data and CSS without a theme-specific Sass file', async (context) => {
@@ -69,6 +73,13 @@ test('adding a theme to the manifest generates Sass data and CSS without a theme
   for (const source of [
     ['src/tokens/_map-colors.scss', 'tokens/_map-colors.scss'],
     ['src/tokens/_map-spacing.scss', 'tokens/_map-spacing.scss'],
+    ['src/tokens/_map-border.scss', 'tokens/_map-border.scss'],
+    ['src/tokens/_map-elevation.scss', 'tokens/_map-elevation.scss'],
+    ['src/tokens/_map-motion.scss', 'tokens/_map-motion.scss'],
+    ['src/tokens/_map-radius.scss', 'tokens/_map-radius.scss'],
+    ['src/tokens/_map-sizing.scss', 'tokens/_map-sizing.scss'],
+    ['src/tokens/_map-typography.scss', 'tokens/_map-typography.scss'],
+    ['src/tokens/_root.scss', 'tokens/_root.scss'],
     ['src/themes/_root.scss', 'themes/_root.scss'],
   ]) {
     await copyFile(path.join(projectRoot, source[0]), path.join(sourceRoot, source[1]));
@@ -88,7 +99,7 @@ test('adding a theme to the manifest generates Sass data and CSS without a theme
   const generatedCss = await readFile(path.join(root, 'dist/themes/coral.css'), 'utf8');
   const distributedManifest = JSON.parse(await readFile(path.join(root, 'dist/manifest.json'), 'utf8'));
   assert.match(generatedSass, /"coral"/);
-  assert.match(generatedCss, /--brand:/);
+  assert.match(generatedCss, /--mu-color-primary:/);
   assert.ok(distributedManifest.themes.some(({ name }) => name === 'coral'));
   await assert.rejects(readFile(path.join(sourceRoot, 'themes/coral.scss')));
 });

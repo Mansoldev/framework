@@ -3,8 +3,19 @@ import MainLayout from '../layouts/MainLayout.astro';
 import themeManifest from '../../../src/themes/manifest.json';
 
 const palettes = themeManifest.themes;
-const defaultShadeOrder = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'];
-const neutralShadeOrder = ['0', '50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950', '1000'];
+type ColorScale = Record<string, string>;
+type ThemeColorGroups = Record<string, ColorScale>;
+
+const compareNames = (left: string, right: string) => left < right ? -1 : left > right ? 1 : 0;
+const palettesWithOrderedColors = palettes.map((theme) => ({
+  ...theme,
+  colorGroups: Object.entries(theme.colors as ThemeColorGroups)
+    .sort(([left], [right]) => compareNames(left, right))
+    .map(([groupName, shades]) => ({
+      groupName,
+      shades: Object.entries(shades).sort(([left], [right]) => Number(left) - Number(right)),
+    })),
+}));
 ---
 
 <MainLayout title="Color palette">
@@ -26,7 +37,7 @@ const neutralShadeOrder = ['0', '50', '100', '200', '300', '400', '500', '600', 
   </header>
 
   <section class="palette-grid">
-    {palettes.map((theme) => (
+    {palettesWithOrderedColors.map((theme) => (
       <article class="palette-card">
         <header class="palette-card__header">
           <h2>{theme.label}</h2>
@@ -34,21 +45,16 @@ const neutralShadeOrder = ['0', '50', '100', '200', '300', '400', '500', '600', 
         </header>
 
         <div class="palette-card__body">
-          {Object.entries(theme.colors).map(([groupName, group]) => (
+          {theme.colorGroups.map(({ groupName, shades }) => (
             <div class="swatch-group">
               <h3 class="swatch-group__title">{groupName}</h3>
               <div class="swatch-row">
-                {(groupName === 'slate' ? neutralShadeOrder : defaultShadeOrder).map((shade) => {
-                  const value = group[shade];
-                  if (!value) return null;
-
-                  return (
+                {shades.map(([shade, value]) => (
                     <div class="swatch">
-                      <div class="swatch__chip" style={`background: ${value};`} aria-label={`${theme.label} ${groupName} ${shade}`} />
+                      <div class="swatch__chip" style={`background: ${value};`} role="img" aria-label={`${theme.label} ${groupName} ${shade}`} />
                       <div class="swatch__meta">{shade}</div>
                     </div>
-                  );
-                })}
+                ))}
               </div>
             </div>
           ))}

@@ -1,17 +1,13 @@
-//@use "sass:map";
+// Generates margin and padding helpers from the shared spacing scale.
 @use "sass:meta";
 @use "../tokens/map-spacing" as spacing;
 
-// ======================================================
-// CONFIG
-// ======================================================
-
-$properties: (
+$mu-properties: (
   m: margin,
   p: padding
 );
 
-$directions: (
+$mu-directions: (
   "": "",
   t: -top,
   r: -right,
@@ -21,17 +17,13 @@ $directions: (
   y: ("-top", "-bottom")
 );
 
-// ======================================================
-// POSITIVE SPACING UTILITIES
-// ======================================================
-
-@each $prop-key, $prop-name in $properties {
-  @each $dir-key, $dir-value in $directions {
+@each $prop-key, $prop-name in $mu-properties {
+  @each $dir-key, $dir-value in $mu-directions {
     @each $size, $value in spacing.$mu-spacers {
       .mu-#{$prop-key}#{$dir-key}-#{$size} {
         @if meta.type-of($dir-value) == "list" {
-          @each $d in $dir-value {
-            #{$prop-name}#{$d}: var(--mu-space-#{$size}) !important;
+          @each $direction in $dir-value {
+            #{$prop-name}#{$direction}: var(--mu-space-#{$size}) !important;
           }
         } @else if $dir-value == "" {
           #{$prop-name}: var(--mu-space-#{$size}) !important;
@@ -43,31 +35,20 @@ $directions: (
   }
 }
 
-// ======================================================
-// AUTO MARGINS
-// ======================================================
-
 .mu-m-auto {
   margin: auto !important;
 }
 
 .mu-mx-auto {
-  margin-left: auto !important;
-  margin-right: auto !important;
+  margin-inline: auto !important;
 }
 
 .mu-my-auto {
-  margin-top: auto !important;
-  margin-bottom: auto !important;
+  margin-block: auto !important;
 }
-
-// ======================================================
-// NEGATIVE MARGINS
-// ======================================================
 
 @each $size, $value in spacing.$mu-spacers {
   @if $size != 0 {
-
     .mu--m-#{$size} {
       margin: calc(var(--mu-space-#{$size}) * -1) !important;
     }
@@ -89,13 +70,11 @@ $directions: (
     }
 
     .mu--mx-#{$size} {
-      margin-left: calc(var(--mu-space-#{$size}) * -1) !important;
-      margin-right: calc(var(--mu-space-#{$size}) * -1) !important;
+      margin-inline: calc(var(--mu-space-#{$size}) * -1) !important;
     }
 
     .mu--my-#{$size} {
-      margin-top: calc(var(--mu-space-#{$size}) * -1) !important;
-      margin-bottom: calc(var(--mu-space-#{$size}) * -1) !important;
+      margin-block: calc(var(--mu-space-#{$size}) * -1) !important;
     }
   }
 }
