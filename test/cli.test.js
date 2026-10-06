@@ -120,7 +120,9 @@ test('invalid manifest colors fail with the theme and tone location', async (con
   }
 
   const manifest = JSON.parse(await readFile(path.join(projectRoot, 'src/themes/manifest.json'), 'utf8'));
-  manifest.themes[0].colors.blue['100'] = 'not-a-color';
+  const neonTheme = manifest.themes.find(({ name }) => name === 'neon');
+  assert.ok(neonTheme, 'expected the manifest to include the neon theme');
+  neonTheme.colors.blue['100'] = 'not-a-color';
   await writeFile(path.join(sourceRoot, 'themes/manifest.json'), JSON.stringify(manifest));
 
   await assert.rejects(buildThemes(root), /Invalid color at neon\/blue\/100/);
