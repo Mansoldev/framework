@@ -1,0 +1,12 @@
+// Creates responsive grids without fixed column counts or horizontal overflow.
+.mu-grid {
+  --mu-grid-min: 16rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--mu-grid-min)), 1fr));
+  gap: var(--mu-grid-gap, var(--mu-space-6));
+}
+
+.mu-grid--compact {
+  --mu-grid-gap: var(--mu-space-3);
+}

@@ -1,25 +1,22 @@
 @use "sass:map"; // Importante: ahora las funciones cuelgan de aquí
+@use "generated-colors" as generated;
 
-// Paleta inicial
-$palette: (
-  "brand": (
-    "500": oklch(65% 0.25 260),     // Azul vibrante
-    "600": oklch(55% 0.22 260),
-  ),
-  "neutral": (
-    "0":   oklch(100% 0 0),         // Blanco puro
-    "100": oklch(97% 0.01 260),
-    "800": oklch(25% 0.02 260),
-    "900": oklch(15% 0.02 260),     // Casi negro
-    "1000": oklch(0% 0 0),          // Negro puro
-  ),
-  "accent": (
-    "500": oklch(70% 0.3 150),      // Verde esmeralda
-  )
-);
+// The build generates this Sass map from the canonical theme manifest.
+$palettes: generated.$palettes;
+$roles: generated.$roles;
 
-// Función helper para acceder al mapa
-@function get-color($group, $shade) {
-  // Cambiamos map-get(...) por map.get(...)
-  @return map.get(map.get($palette, $group), $shade);
+@function get-color($group, $shade, $palette-name: "neon") {
+  @if not map.has-key($palettes, $palette-name) {
+    @error "Unknown color palette `#{$palette-name}`.";
+  }
+
+  @if not map.has-key(map.get($palettes, $palette-name), $group) {
+    @error "Unknown color group `#{$group}` in palette `#{$palette-name}`.";
+  }
+
+  @if not map.has-key(map.get(map.get($palettes, $palette-name), $group), $shade) {
+    @error "Unknown shade `#{$shade}` in color group `#{$group}`.";
+  }
+
+  @return map.get($palettes, $palette-name, $group, $shade);
 }

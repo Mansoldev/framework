@@ -1,0 +1,17 @@
+// Keeps native checkbox and radio behavior while applying theme-aware accents.
+.mu-choice {
+  width: var(--mu-size-icon-sm);
+  height: var(--mu-size-icon-sm);
+  margin: 0;
+  accent-color: var(--mu-color-primary);
+  vertical-align: middle;
+
+  &:focus-visible {
+    outline: var(--mu-border-width-2) solid var(--mu-color-focus);
+    outline-offset: var(--mu-border-width-2);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}

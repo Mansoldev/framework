@@ -1,18 +1,60 @@
-.c-btn {
+// Neutral button primitive; color utilities supply product-specific emphasis.
+.mu-btn {
+  --mu-btn-bg: transparent;
+  --mu-btn-color: var(--mu-color-text-main);
+  --mu-btn-border: var(--mu-color-border-strong);
+  --mu-btn-hover-overlay: color-mix(in srgb, currentColor 8%, transparent);
+
+  display: inline-flex;
+  min-height: var(--mu-size-control-md);
+  align-items: center;
+  justify-content: center;
+  gap: var(--mu-space-2);
+  padding: var(--mu-space-2) var(--mu-space-4);
+  border: var(--mu-border-width-1) solid var(--mu-btn-border);
+  border-radius: var(--mu-radius-md);
+  background-color: var(--mu-btn-bg);
+  color: var(--mu-btn-color);
+  font: inherit;
+  font-size: var(--mu-font-size-sm);
+  font-weight: var(--mu-font-weight-semibold);
+  line-height: var(--mu-line-height-tight);
+  text-align: center;
+  text-decoration: none;
   cursor: pointer;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75em 1.5em;
-  font-weight: 600;
-  background-color: var(--brand);
-  color: white;
-  transition: filter 0.2s;
+  transition:
+    background-color var(--mu-motion-duration-fast) var(--mu-motion-easing-standard),
+    border-color var(--mu-motion-duration-fast) var(--mu-motion-easing-standard),
+    color var(--mu-motion-duration-fast) var(--mu-motion-easing-standard);
 
-  &:hover { filter: brightness(1.1); }
+  &:hover:not(:disabled) {
+    background-image: linear-gradient(var(--mu-btn-hover-overlay), var(--mu-btn-hover-overlay));
+  }
 
-  &--secondary {
-    background-color: var(--surface);
-    color: var(--text-main);
-    border: 1px solid var(--border);
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  &:focus-visible {
+    outline: var(--mu-border-width-2) solid var(--mu-color-focus);
+    outline-offset: var(--mu-border-width-2);
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &--sm {
+    min-height: var(--mu-size-control-sm);
+    padding-inline: var(--mu-space-3);
+    font-size: var(--mu-font-size-xs);
+  }
+
+  &--lg {
+    min-height: var(--mu-size-control-lg);
+    padding-inline: var(--mu-space-6);
+    font-size: var(--mu-font-size-base);
   }
 }

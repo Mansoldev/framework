@@ -17,8 +17,6 @@
       </button>
 
       <select id="styleSelect" class="select">
-        <option value="neon">Neón</option>
-        <option value="pastel">Pastel</option>
       </select>
     </div>
   </header>
@@ -46,18 +44,32 @@
   </div>
 
   <script type="module">
+    import themeManifest from './src/themes/manifest.json';
+    import './src/main.scss';
+
     const root = document.documentElement;
     const btn = document.getElementById('themeToggle');
+    const paletteSelect = document.getElementById('styleSelect');
+    const themes = themeManifest.themes;
+
+    paletteSelect.replaceChildren(...themes.map((theme) => new Option(theme.label, theme.name)));
+    root.dataset.palette = themes[0]?.name;
+
+    paletteSelect.addEventListener('change', () => {
+      root.dataset.palette = paletteSelect.value;
+    });
 
     btn.addEventListener('click', () => {
-      const isDark = root.getAttribute('data-theme') === 'dark';
+      const isDark = root.dataset.theme
+        ? root.dataset.theme === 'dark'
+        : window.matchMedia('(prefers-color-scheme: dark)').matches;
 
       if (isDark) {
-        root.setAttribute('data-theme', 'light');
-        btn.innerHTML = '🌙 Modo Oscuro';
+        root.dataset.theme = 'light';
+        btn.textContent = '🌙 Modo Oscuro';
       } else {
-        root.setAttribute('data-theme', 'dark');
-        btn.innerHTML = '☀️ Modo Claro';
+        root.dataset.theme = 'dark';
+        btn.textContent = '☀️ Modo Claro';
       }
     });
   </script>

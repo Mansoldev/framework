@@ -1,7 +1,8 @@
 ---
 import '../styles/website.scss';
+import themeManifest from '../../../src/themes/manifest.json';
 
-if (Astro.mode !== 'production') {
+if (!import.meta.env.PROD) {
   await import('../../../src/main.scss');
 }
 
@@ -10,28 +11,41 @@ interface Props {
 }
 
 const { title = "System Style Framework" } = Astro.props;
+const themes = themeManifest.themes;
+const defaultTheme = themes.find((theme) => theme.name === 'material')?.name ?? themes[0]?.name;
 ---
 
-<html lang="es">
+<html lang="es" data-palette={defaultTheme}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>{title}</title>
+    <script is:inline>
+      try {
+        const savedMode = localStorage.getItem('mu-theme-mode');
+        if (savedMode === 'light' || savedMode === 'dark') {
+          document.documentElement.dataset.theme = savedMode;
+        }
+      } catch {
+        // The system color scheme remains the fallback when storage is unavailable.
+      }
+    </script>
 
-    {Astro.mode === 'production' && <link rel="stylesheet" href="/framework.css" />}
+    <title>{title}</title>
+    {import.meta.env.PROD && <link rel="stylesheet" href="/framework.css" />}
   </head>
 
   <body>
     <header class="topbar">
-      <h1 class="topbar__title">M-System UI</h1>
+      <h1 class="topbar__title">Mansoldev Framework CSS</h1>
       <div class="topbar__actions">
-        <button id="themeToggle" class="mc-btn mc-btn--secondary">
-          🌙 Oscuro
+        <button id="themeToggle" class="mu-btn" type="button" aria-label="Cambiar a modo oscuro" aria-pressed="false">
+          🌙 Modo oscuro
         </button>
-        <select id="styleSelect" class="select">
-          <option value="neon">Neón</option>
-          <option value="pastel">Pastel</option>
+        <select id="styleSelect" class="mu-form-control">
+          {themes.map((theme) => (
+            <option value={theme.name}>{theme.label}</option>
+          ))}
         </select>
       </div>
     </header>
@@ -45,9 +59,7 @@ const { title = "System Style Framework" } = Astro.props;
         <nav class="nav">
           <a href="/">Index</a>
           <a href="/htmltags">Html tags</a>
-          <a href="#">Botones</a>
-          <a href="#">Cards</a>
-          <a href="#">Documentación</a>
+          <a href="/color-palette">Color palette</a>
         </nav>
       </aside>
 
@@ -59,17 +71,40 @@ const { title = "System Style Framework" } = Astro.props;
     <script type="module">
       const root = document.documentElement;
       const btn = document.getElementById('themeToggle');
+      const paletteSelect = document.getElementById('styleSelect');
+      const preferenceKey = 'mu-theme-mode';
+      const systemColorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+      const currentMode = () => root.dataset.theme ?? (systemColorScheme.matches ? 'dark' : 'light');
+      const syncModeControl = () => {
+        const isDark = currentMode() === 'dark';
+        btn.setAttribute('aria-pressed', String(isDark));
+        btn.setAttribute('aria-label', isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+        btn.textContent = isDark ? '☀️ Modo claro' : '🌙 Modo oscuro';
+      };
+
+      root.dataset.palette = paletteSelect.value;
+      syncModeControl();
+
+      paletteSelect.addEventListener('change', () => {
+        root.dataset.palette = paletteSelect.value;
+      });
+
+      systemColorScheme.addEventListener('change', () => {
+        if (!root.dataset.theme) syncModeControl();
+      });
 
       btn.addEventListener('click', () => {
-        const isDark = root.getAttribute('data-theme') === 'dark';
+        const nextMode = currentMode() === 'dark' ? 'light' : 'dark';
+        root.dataset.theme = nextMode;
 
-        if (isDark) {
-          root.setAttribute('data-theme', 'light');
-          btn.innerHTML = '🌙 Modo Oscuro';
-        } else {
-          root.setAttribute('data-theme', 'dark');
-          btn.innerHTML = '☀️ Modo Claro';
+        try {
+          localStorage.setItem(preferenceKey, nextMode);
+        } catch {
+          // The current page still changes mode when storage is unavailable.
         }
+
+        syncModeControl();
       });
     </script>
   </body>

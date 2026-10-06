@@ -5,9 +5,11 @@ node_modules/
 # Salida de compilación del Framework
 dist/
 temp/
+src/tokens/_generated-colors.scss
 
 # Salida de compilación de la documentación (GitHub Pages)
 docs/
+website/.astro/
 
 # Logs de error y runtime
 npm-debug.log*

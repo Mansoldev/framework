@@ -1,0 +1,56 @@
+// Emits globally reusable design tokens as CSS custom properties.
+@use "map-border" as border;
+@use "map-elevation" as elevation;
+@use "map-motion" as motion;
+@use "map-radius" as radius;
+@use "map-sizing" as sizing;
+@use "map-spacing" as spacing;
+@use "map-typography" as typography;
+
+@mixin emit {
+  :root {
+    @each $key, $value in spacing.$mu-spacers {
+      --mu-space-#{$key}: #{$value};
+    }
+
+    @each $name, $value in typography.$mu-font-families {
+      --mu-font-family-#{$name}: #{$value};
+    }
+
+    @each $name, $value in typography.$mu-font-sizes {
+      --mu-font-size-#{$name}: #{$value};
+    }
+
+    @each $name, $value in typography.$mu-font-weights {
+      --mu-font-weight-#{$name}: #{$value};
+    }
+
+    @each $name, $value in typography.$mu-line-heights {
+      --mu-line-height-#{$name}: #{$value};
+    }
+
+    @each $name, $value in sizing.$mu-sizes {
+      --mu-size-#{$name}: #{$value};
+    }
+
+    @each $name, $value in radius.$mu-radii {
+      --mu-radius-#{$name}: #{$value};
+    }
+
+    @each $name, $value in border.$mu-border-widths {
+      --mu-border-width-#{$name}: #{$value};
+    }
+
+    @each $name, $value in motion.$mu-motion-durations {
+      --mu-motion-duration-#{$name}: #{$value};
+    }
+
+    @each $name, $value in motion.$mu-motion-easings {
+      --mu-motion-easing-#{$name}: #{$value};
+    }
+
+    @each $name, $value in elevation.$mu-elevations {
+      --mu-elevation-#{$name}: #{$value};
+    }
+  }
+}

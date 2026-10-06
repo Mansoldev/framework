@@ -3,26 +3,49 @@
 	"version": "1.0.0",
 	"type": "module",
 	"description": "A modern CSS framework powered by Sass and PostCSS.",
+	"files": [
+		"bin/",
+		"dist/",
+		"README.md",
+		"LICENSE"
+	],
+	"exports": {
+		"./core.css": "./dist/core.css",
+		"./framework.css": "./dist/framework.css",
+		"./manifest.json": "./dist/manifest.json",
+		"./themes/*.css": "./dist/themes/*.css"
+	},
+	"engines": {
+		"node": ">=20.12.0"
+	},
+	"bin": {
+		"mansoldev-css": "./bin/cli.js"
+	},
 	"scripts": {
-		"clean": "node -e \"const fs = require('fs'); ['dist', 'docs', 'temp'].forEach(path => fs.rmSync(path, { recursive: true, force: true }))\"",
-		"dev": "pnpm exec astro dev --root website",
-		"build:framework": "pnpm exec vite build --config vite.config.framework.js",
-		"build:website": "node -e \"const fs=require('fs'); const path=require('path'); const src=path.resolve('dist','framework.css'); const dest=path.resolve('website','public','framework.css'); fs.mkdirSync(path.dirname(dest),{recursive:true}); fs.cpSync(src,dest);\" && pnpm exec astro build --root website && node -e \"const fs=require('fs'); const path=require('path'); const src=path.resolve('website','dist'); const dest=path.resolve('docs'); fs.rmSync(dest,{recursive:true,force:true}); fs.cpSync(src,dest,{recursive:true}); fs.rmSync(src,{recursive:true,force:true});\"",
-		"build": "pnpm run clean && pnpm run build:framework && pnpm run build:website",
+		"clean": "node scripts/clean.js",
+		"dev": "node scripts/build-themes.js && pnpm exec astro dev --root website",
+		"dev:root": "node scripts/build-themes.js && pnpm exec vite --config vite.config.js",
+		"build:framework": "node scripts/clean.js --framework && node scripts/build-themes.js && pnpm exec vite build --config vite.config.framework.js",
+		"build:website": "pnpm run build:framework && node scripts/build-website.js",
+		"build:root": "node scripts/build-themes.js && pnpm exec vite build --config vite.config.js",
+		"build": "pnpm run clean && pnpm run build:website",
+		"test": "pnpm run build:framework && node --test",
 		"preview": "pnpm exec astro preview --host --root website"
 	},
 	"devDependencies": {
-		"autoprefixer": "^10.5.0",
-		"cssnano": "^8.0.1",
-		"postcss": "^8.5.15",
-		"postcss-cli": "^11.0.1",
-		"sass-embedded": "^1.100.0",
-		"vite": "^6.0.0",
-		"astro": "^6.0.0"
+		"astro": "^7.3.5",
+		"autoprefixer": "^10.6.1",
+		"cssnano": "^9.2.2",
+		"postcss": "^8.5.28",
+		"sass-embedded": "^1.105.1",
+		"vite": "^8.3.2"
 	},
 	"browserslist": [
 		"> 0.5%",
 		"last 2 versions",
 		"not dead"
-	]
+	],
+	"dependencies": {
+		"@clack/prompts": "^1.8.1"
+	}
 }

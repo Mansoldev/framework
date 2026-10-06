@@ -1,0 +1,23 @@
+// Neutral alert surface with semantic accents for informational states.
+.mu-alert {
+  --mu-alert-accent: var(--mu-color-info);
+
+  padding: var(--mu-space-4);
+  border: var(--mu-border-width-1) solid var(--mu-color-border);
+  border-inline-start: var(--mu-border-width-4) solid var(--mu-alert-accent);
+  border-radius: var(--mu-radius-md);
+  background-color: var(--mu-color-surface);
+  color: var(--mu-color-text-main);
+}
+
+.mu-alert--success {
+  --mu-alert-accent: var(--mu-color-success);
+}
+
+.mu-alert--warning {
+  --mu-alert-accent: var(--mu-color-warning);
+}
+
+.mu-alert--danger {
+  --mu-alert-accent: var(--mu-color-danger);
+}

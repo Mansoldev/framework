@@ -2,3 +2,7 @@ allowBuilds:
   '@parcel/watcher': false
   esbuild: true
   sharp: true
+minimumReleaseAgeExclude:
+  - cssnano-preset-default@9.2.2
+  - cssnano@9.2.2
+  - postcss-merge-rules@9.0.8

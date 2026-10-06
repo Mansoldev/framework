@@ -1,49 +1,50 @@
-/* 2026: Evitar que el texto se reajuste al girar el móvil (iOS) y scroll suave */
+// Establishes theme-aware defaults for semantic HTML elements.
 html {
-  scroll-behavior: smooth; //2026: Se asume que si un usuario hace clic en un ancla, la web baje suavemente, 
-  //a menos que prefiera lo contrario (cosa que ya manejas en tu media query)
-  line-height: 1.5; //2026: mantiene el interlineado homogéneo
+  // Smooth anchor navigation is disabled for users who prefer reduced motion in the reset layer.
+  scroll-behavior: smooth;
+  line-height: var(--mu-line-height-normal);
 }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 1rem; 
-  background-color: var(--bg-body);
-  color: var(--text-main);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: var(--mu-font-family-sans);
+  font-size: var(--mu-font-size-base);
+  background-color: var(--mu-color-bg-body);
+  color: var(--mu-color-text-main);
+  transition:
+    background-color var(--mu-motion-duration-normal) var(--mu-motion-easing-standard),
+    color var(--mu-motion-duration-normal) var(--mu-motion-easing-standard);
 }
 
-// Manejo de anclas según la opinión del framework
 :target {
-  // Puedes usar una variable CSS de tus tokens/temas, o una variable Sass aquí
-  scroll-margin-top: var(--scroll-margin-top, 2rem); 
+  // Reserve physical space at the top edge for fixed headers; consumers can override or disable it.
+  scroll-margin-top: var(--mu-scroll-margin-top, var(--mu-space-8));
 }
 
 h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  line-height: 1.1;
+  font-size: var(--mu-font-size-4xl);
+  font-weight: var(--mu-font-weight-bold);
+  line-height: var(--mu-line-height-tight);
   text-wrap: balance; 
 }
 
 h2 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: var(--mu-font-size-2xl);
+  font-weight: var(--mu-font-weight-bold);
+  line-height: var(--mu-line-height-tight);
   text-wrap: balance;
 }
 
 p {
-  max-width: 65ch; 
+  max-width: var(--mu-size-content);
   text-wrap: pretty;
 }
 
-// Estilización del texto 'alt' por opinión de diseño
+// Keep fallback alt text visually distinct when an image cannot be displayed.
 img {
   font-style: italic;
 }
 
-/* 2026: textarea solo creazca en vertical para no romper layouts*/
+// Keep textarea resizing vertical so it cannot widen and break surrounding layouts.
 textarea {
-  resize: vertical; //Añadir .resize-both
+  resize: vertical;
 }

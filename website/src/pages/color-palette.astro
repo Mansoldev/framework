@@ -1,0 +1,65 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import themeManifest from '../../../src/themes/manifest.json';
+
+const palettes = themeManifest.themes;
+type ColorScale = Record<string, string>;
+type ThemeColorGroups = Record<string, ColorScale>;
+
+const compareNames = (left: string, right: string) => left < right ? -1 : left > right ? 1 : 0;
+const palettesWithOrderedColors = palettes.map((theme) => ({
+  ...theme,
+  colorGroups: Object.entries(theme.colors as ThemeColorGroups)
+    .sort(([left], [right]) => compareNames(left, right))
+    .map(([groupName, shades]) => ({
+      groupName,
+      shades: Object.entries(shades).sort(([left], [right]) => Number(left) - Number(right)),
+    })),
+}));
+---
+
+<MainLayout title="Color palette">
+  <header class="hero">
+    <div>
+      <h1>Color palette</h1>
+      <p>
+        Paletas completas inspiradas en Material Design, Bootstrap, Vuetify y Tailwind, expresadas en OKLCH para mantener mejor
+        contraste y una escala consistente.
+      </p>
+    </div>
+    <aside class="hero-note">
+      <h2>Principios</h2>
+      <p>
+        Cada tema expone familias de color reales con tonos 50–950 y roles semánticos que se asignan a la escala primaria, de éxito,
+        advertencia, peligro y neutral.
+      </p>
+    </aside>
+  </header>
+
+  <section class="palette-grid">
+    {palettesWithOrderedColors.map((theme) => (
+      <article class="palette-card">
+        <header class="palette-card__header">
+          <h2>{theme.label}</h2>
+          <p>{theme.description}</p>
+        </header>
+
+        <div class="palette-card__body">
+          {theme.colorGroups.map(({ groupName, shades }) => (
+            <div class="swatch-group">
+              <h3 class="swatch-group__title">{groupName}</h3>
+              <div class="swatch-row">
+                {shades.map(([shade, value]) => (
+                    <div class="swatch">
+                      <div class="swatch__chip" style={`background: ${value};`} role="img" aria-label={`${theme.label} ${groupName} ${shade}`} />
+                      <div class="swatch__meta">{shade}</div>
+                    </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </article>
+    ))}
+  </section>
+</MainLayout>

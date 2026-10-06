@@ -1,0 +1,7 @@
+// Compile-time viewport breakpoints; Sass uses these in media queries.
+$mu-breakpoints: (
+  sm: 40rem,
+  md: 48rem,
+  lg: 64rem,
+  xl: 80rem
+);

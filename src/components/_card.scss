@@ -1,0 +1,8 @@
+// Optional neutral surface for grouping related content.
+.mu-card {
+  padding: var(--mu-space-4);
+  border: var(--mu-border-width-1) solid var(--mu-color-border);
+  border-radius: var(--mu-radius-lg);
+  background-color: var(--mu-color-surface);
+  color: var(--mu-color-text-main);
+}
